@@ -47,9 +47,7 @@ do
       elseif Controller.pressed("up") then
         vec.y = -1
       end
-      print("ага")
       if Controller.pressed("shoot") then
-        print("угу")
         self:shoot()
       end
       local speed

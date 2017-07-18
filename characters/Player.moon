@@ -38,9 +38,7 @@ class player extends Basechar
     elseif Controller.pressed "up" then
       vec.y = -1
 
-    print("ага")
     if Controller.pressed "shoot" then
-      print("угу")
       @shoot!
 
     local speed
