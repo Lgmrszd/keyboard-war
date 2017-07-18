@@ -2,6 +2,7 @@ lovelog = require "lib.lovelog"
 vector = require "hump.vector"
 colorize = require "lib.colorize"
 signal = require "hump.signal"
+config = require "config"
 HC = require "HCWorld"
 import graphics from love
 
@@ -49,7 +50,7 @@ class Bullet
   update: (dt) =>
     @pos += @speed * dt * @dir
     @hitbox\moveTo @pos.x, @pos.y
-    if @pos.y < 0 or @pos.y > love.graphics.getHeight!
+    if @pos.y < 0 or @pos.y > love.graphics.getHeight! or @pos.x < 0 or @pos.x > config.scene_width
       @remove!
 
   draw: =>
