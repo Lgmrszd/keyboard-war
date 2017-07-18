@@ -1,5 +1,6 @@
 vector = require "hump.vector"
 lovelog = require "lib.lovelog"
+config = require "config"
 import Bullet from require "lib.Bullet"
 import graphics, keyboard from love
 Vector = require "hump.vector"
@@ -38,8 +39,8 @@ class Enemy extends Basechar
     if @pos.x < 0
       @pos.x = 0
       @mode = 'right'
-    elseif @pos.x > graphics.getWidth!-200
-      @pos.x = graphics.getWidth!-200
+    elseif @pos.x > config.scene_width
+      @pos.x = config.scene_width
       @mode = 'left'
 
     @hitbox\moveTo @pos.x, @pos.y
@@ -53,4 +54,4 @@ class Enemy extends Basechar
     }
   draw: =>
     super\draw!
-    lovelog.print "HOLY SHIT THAT'S DEBUG"
+    lovelog.print "Boss's hp: " .. @hp

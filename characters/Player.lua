@@ -2,6 +2,7 @@ local vector = require("hump.vector")
 local signal = require("hump.signal")
 local lovelog = require("lib.lovelog")
 local colorize = require("lib.colorize")
+local config = require("config")
 local Bullet
 Bullet = require("lib.Bullet").Bullet
 local graphics, keyboard
@@ -62,8 +63,8 @@ do
       self.pos = self.pos + dt * speed * vec:normalized()
       if self.pos.x < 0 then
         self.pos.x = 0
-      elseif self.pos.x > graphics.getWidth() - 200 then
-        self.pos.x = graphics.getWidth() - 200
+      elseif self.pos.x > config.scene_width then
+        self.pos.x = config.scene_width
       end
       if self.pos.y > graphics.getHeight() then
         self.pos.y = graphics.getHeight()

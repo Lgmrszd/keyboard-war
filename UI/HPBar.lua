@@ -2,31 +2,27 @@ local colorize = require("lib.colorize")
 local config = require("config")
 local graphics
 graphics = love.graphics
-local StatsPanel
+local HPBar
 do
   local _class_0
-  local canvas
+  local shift
   local _base_0 = {
     draw = function(self)
-      love.graphics.setCanvas(canvas)
-      colorize({
-        20,
+      return colorize({
+        255,
         0,
-        20
+        0
       }, function()
-        return graphics.rectangle("fill", 0, 0, canvas:getWidth(), canvas:getHeight())
+        return graphics.rectangle("fill", shift, 10, config.scene_width - shift * 2, 10)
       end)
-      graphics.printf("WHAT", 10, 10, 100)
-      graphics.setCanvas()
-      return graphics.draw(canvas, config.scene_width, 0)
     end,
-    update = function(self, dt) end
+    update = function(self) end
   }
   _base_0.__index = _base_0
   _class_0 = setmetatable({
     __init = function() end,
     __base = _base_0,
-    __name = "StatsPanel"
+    __name = "HPBar"
   }, {
     __index = _base_0,
     __call = function(cls, ...)
@@ -37,7 +33,7 @@ do
   })
   _base_0.__class = _class_0
   local self = _class_0
-  canvas = love.graphics.newCanvas(200, love.graphics.getHeight())
-  StatsPanel = _class_0
+  shift = 20
+  HPBar = _class_0
   return _class_0
 end

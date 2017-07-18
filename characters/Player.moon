@@ -2,6 +2,7 @@ vector = require "hump.vector"
 signal = require "hump.signal"
 lovelog = require "lib.lovelog"
 colorize = require "lib.colorize"
+config = require "config"
 import Bullet from require "lib.Bullet"
 import graphics, keyboard from love
 Basechar = require "lib.Basechar"
@@ -50,8 +51,8 @@ class player extends Basechar
     @pos = @pos + dt * speed * vec\normalized!
     if @pos.x < 0
       @pos.x = 0
-    elseif @pos.x > graphics.getWidth!-200
-      @pos.x = graphics.getWidth!-200
+    elseif @pos.x > config.scene_width
+      @pos.x = config.scene_width
     if @pos.y > graphics.getHeight!
       @pos.y = graphics.getHeight!
     elseif @pos.y < 0
