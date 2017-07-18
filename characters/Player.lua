@@ -5,11 +5,9 @@ local colorize = require("lib.colorize")
 local config = require("config")
 local Bullet
 Bullet = require("lib.Bullet").Bullet
-local graphics, keyboard
-do
-  local _obj_0 = love
-  graphics, keyboard = _obj_0.graphics, _obj_0.keyboard
-end
+local graphics
+graphics = love.graphics
+local Controller = require("lib.Controller")
 local Basechar = require("lib.Basechar")
 local HC = require("HCWorld")
 local player
@@ -39,21 +37,23 @@ do
     end,
     update = function(self, dt)
       local vec = vector(0)
-      if keyboard.isDown("left") then
+      if Controller.pressed("left") then
         vec.x = -1
-      elseif keyboard.isDown("right") then
+      elseif Controller.pressed("right") then
         vec.x = 1
       end
-      if keyboard.isDown("down") then
+      if Controller.pressed("down") then
         vec.y = 1
-      elseif keyboard.isDown("up") then
+      elseif Controller.pressed("up") then
         vec.y = -1
       end
-      if keyboard.isDown("z") then
+      print("ага")
+      if Controller.pressed("shoot") then
+        print("угу")
         self:shoot()
       end
       local speed
-      if keyboard.isDown("lshift") then
+      if Controller.pressed("slowdown") then
         speed = self.slowspeed
         self.draw_hitbox = true
       else
@@ -83,7 +83,7 @@ do
     end,
     shoot = function(self)
       local dist = 20
-      if keyboard.isDown("lshift") then
+      if Controller.pressed("lshift") then
         dist = 10
       end
       Bullet({

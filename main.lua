@@ -1,4 +1,5 @@
 local StateManager = require("lib.StateManager")
+local Controller = require("lib.Controller")
 local lovelog = require("lib.lovelog")
 love.load = function()
   math.randomseed(os.time())
@@ -13,6 +14,6 @@ love.keypressed = function(kid)
   end
   local state = StateManager.getState()
   if state.keypressed then
-    return state:keypressed(kid)
+    return state:keypressed(Controller.getActionByKey(kid))
   end
 end

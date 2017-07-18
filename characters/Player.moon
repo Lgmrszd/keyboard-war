@@ -4,7 +4,8 @@ lovelog = require "lib.lovelog"
 colorize = require "lib.colorize"
 config = require "config"
 import Bullet from require "lib.Bullet"
-import graphics, keyboard from love
+import graphics from love
+Controller = require "lib.Controller"
 Basechar = require "lib.Basechar"
 HC = require "HCWorld"
 
@@ -27,21 +28,23 @@ class player extends Basechar
 
   update: (dt) =>
     vec = vector 0
-    if keyboard.isDown "left" then
+    if Controller.pressed "left" then
       vec.x = -1
-    elseif keyboard.isDown "right" then
+    elseif Controller.pressed "right" then
       vec.x = 1
 
-    if keyboard.isDown "down" then
+    if Controller.pressed "down" then
       vec.y = 1
-    elseif keyboard.isDown "up" then
+    elseif Controller.pressed "up" then
       vec.y = -1
 
-    if keyboard.isDown "z" then
+    print("ага")
+    if Controller.pressed "shoot" then
+      print("угу")
       @shoot!
 
     local speed
-    if keyboard.isDown("lshift")
+    if Controller.pressed "slowdown"
       speed = @slowspeed
       @draw_hitbox = true
     else
@@ -69,7 +72,7 @@ class player extends Basechar
 
   shoot: =>
     dist = 20
-    if keyboard.isDown("lshift")
+    if Controller.pressed "lshift"
       dist = 10
     Bullet{
       pos: @pos + vector(-dist, -10),

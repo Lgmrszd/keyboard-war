@@ -1,4 +1,5 @@
 StateManager = require "lib.StateManager"
+Controller = require "lib.Controller"
 lovelog = require "lib.lovelog"
 -- require "lib.lovedebug"
 
@@ -14,4 +15,4 @@ love.keypressed = (kid) ->
     lovelog.toggle!
   state = StateManager.getState!
   if state.keypressed
-    state\keypressed(kid)
+    state\keypressed(Controller.getActionByKey kid)

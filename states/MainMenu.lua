@@ -44,7 +44,7 @@ do
         if self.active_node == 0 then
           self.active_node = #self.menu
         end
-      elseif key_id == "z" then
+      elseif key_id == "shoot" then
         return self.menu[self.active_node].action()
       end
     end,

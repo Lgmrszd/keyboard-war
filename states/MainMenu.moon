@@ -24,7 +24,7 @@ class MainMenu
       @active_node -= 1
       if @active_node == 0
         @active_node = #@menu
-    elseif key_id == "z"
+    elseif key_id == "shoot"
       @menu[@active_node].action!
 
   update: (dt) =>
