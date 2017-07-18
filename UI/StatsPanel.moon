@@ -3,7 +3,7 @@ config = require "config"
 import graphics from love
 
 class StatsPanel
-  canvas = love.graphics.newCanvas 200, love.graphics.getHeight!
+  canvas = love.graphics.newCanvas config.panel_width, config.scene_height
   draw: =>
     love.graphics.setCanvas canvas
     colorize {20, 0, 20}, -> graphics.rectangle "fill", 0, 0, canvas\getWidth!, canvas\getHeight!

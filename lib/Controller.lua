@@ -4,7 +4,13 @@ local keyboard
 keyboard = love.keyboard
 local reversed_binds = { }
 for k, v in pairs(binds) do
-  reversed_binds[v] = k
+  if type(v) == "table" then
+    for _, key in pairs(v) do
+      reversed_binds[key] = k
+    end
+  else
+    reversed_binds[v] = k
+  end
 end
 local controller = {
   pressed = function(key)

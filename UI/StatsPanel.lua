@@ -37,7 +37,7 @@ do
   })
   _base_0.__class = _class_0
   local self = _class_0
-  canvas = love.graphics.newCanvas(200, love.graphics.getHeight())
+  canvas = love.graphics.newCanvas(config.panel_width, config.scene_height)
   StatsPanel = _class_0
   return _class_0
 end

@@ -10,13 +10,13 @@ Basechar = require "lib.Basechar"
 HC = require "HCWorld"
 
 class Player extends Basechar
-  -- text: "(･θ･)"
+  keys_locked = true
   text: "(=^･ω･^=)"
   width: 70
   speed: 300
   slowspeed: 100
   health: 3 -- lives
-  keys_locked: true
+  bombs: 3
 
   draw: =>
     super\draw!
@@ -27,8 +27,7 @@ class Player extends Basechar
     lovelog.print "Player x: " .. @pos.x
 
   update: (dt) =>
-    print @keys_locked
-    if @keys_locked
+    if keys_locked
       return
     vec = Vector 0
     if Controller.pressed "left" then
@@ -87,7 +86,7 @@ class Player extends Basechar
     }
 
   keyreleased: (key) =>
-    @keys_locked = false
+    keys_locked = false
 
   keypressed: (key) =>
     -- TODO?

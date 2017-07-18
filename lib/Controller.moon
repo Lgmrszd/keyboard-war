@@ -3,8 +3,11 @@ import keyboard from love
 
 reversed_binds = {}
 for k, v in pairs binds
-  reversed_binds[v] = k
-
+  if type(v) == "table"
+    for _, key in pairs v do
+      reversed_binds[key] = k
+  else
+    reversed_binds[v] = k
 
 controller =
   pressed: (key) ->

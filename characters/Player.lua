@@ -13,6 +13,7 @@ local HC = require("HCWorld")
 local Player
 do
   local _class_0
+  local keys_locked
   local _parent_0 = Basechar
   local _base_0 = {
     text = "(=^･ω･^=)",
@@ -20,7 +21,7 @@ do
     speed = 300,
     slowspeed = 100,
     health = 3,
-    keys_locked = true,
+    bombs = 3,
     draw = function(self)
       _class_0.__parent.draw(self)
       if self.draw_hitbox then
@@ -37,8 +38,7 @@ do
       return lovelog.print("Player x: " .. self.pos.x)
     end,
     update = function(self, dt)
-      print(self.keys_locked)
-      if self.keys_locked then
+      if keys_locked then
         return 
       end
       local vec = Vector(0)
@@ -103,7 +103,7 @@ do
       })
     end,
     keyreleased = function(self, key)
-      self.keys_locked = false
+      keys_locked = false
     end,
     keypressed = function(self, key) end
   }
@@ -135,6 +135,8 @@ do
     end
   })
   _base_0.__class = _class_0
+  local self = _class_0
+  keys_locked = true
   if _parent_0.__inherited then
     _parent_0.__inherited(_parent_0, _class_0)
   end
