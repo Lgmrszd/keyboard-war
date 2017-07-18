@@ -2,6 +2,7 @@ local lovelog = require("lib.lovelog")
 local vector = require("hump.vector")
 local colorize = require("lib.colorize")
 local signal = require("hump.signal")
+local config = require("config")
 local HC = require("HCWorld")
 local graphics
 graphics = love.graphics
@@ -44,7 +45,7 @@ do
     update = function(self, dt)
       self.pos = self.pos + (self.speed * dt * self.dir)
       self.hitbox:moveTo(self.pos.x, self.pos.y)
-      if self.pos.y < 0 or self.pos.y > love.graphics.getHeight() then
+      if self.pos.y < 0 or self.pos.y > love.graphics.getHeight() or self.pos.x < 0 or self.pos.x > config.scene_width then
         return self:remove()
       end
     end,
