@@ -64,7 +64,7 @@ class player extends Basechar
 
     if next(HC\collisions(@hitbox))
       for k, v in pairs HC\collisions(@hitbox)
-        if k.type == "evil_bullet"
+        if k.type == "evil"
           signal.emit "player_meets_bullet"
           return
 
@@ -78,9 +78,11 @@ class player extends Basechar
       pos: @pos + vector(-dist, -10),
       speed: 2000,
       dir: vector 0, -1
+      type: "good"
     }
     Bullet{
       pos: @pos + vector(dist, -10),
       speed: 2000,
       dir: vector 0, -1
+      type: "good"
     }

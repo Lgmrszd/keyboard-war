@@ -1,4 +1,5 @@
 vector = require "hump.vector"
+signal = require "hump.signal"
 lovelog = require "lib.lovelog"
 config = require "config"
 import Bullet from require "lib.Bullet"
@@ -6,14 +7,14 @@ import graphics, keyboard from love
 Vector = require "hump.vector"
 Basechar = require "lib.Basechar"
 HC = require "HCWorld"
-MaxHp = 200
 
 class Enemy extends Basechar
   new: (pos) =>
     @hitbox_radius = 10
     @hitbox = HC\circle @pos.x, @pos.y, @hitbox_radius
     @pos = pos or @pos
-    @hp = MaxHp
+    @max_hp = 100
+    @hp = @max_hp
     @texts = {
       right: "(凸ಠ益ಠ)凸"
       left: "凸(ಠ益ಠ凸)"
@@ -42,7 +43,11 @@ class Enemy extends Basechar
     elseif @pos.x > config.scene_width
       @pos.x = config.scene_width
       @mode = 'left'
-
+    if next(HC\collisions(@hitbox))
+      for k, v in pairs HC\collisions(@hitbox)
+        if k.type == "good"
+          @hp -= 1
+          signal.emit("boss_hp", @max_hp, @hp)
     @hitbox\moveTo @pos.x, @pos.y
 
   shoot: =>
@@ -51,6 +56,7 @@ class Enemy extends Basechar
       speed: math.random(30, 200)
       dir: Vector(math.random! - 0.5, math.random!)\normalized!
       char: "9"
+      type: "evil"
     }
   draw: =>
     super\draw!

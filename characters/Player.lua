@@ -74,7 +74,7 @@ do
       self.hitbox:moveTo(self.pos.x, self.pos.y)
       if next(HC:collisions(self.hitbox)) then
         for k, v in pairs(HC:collisions(self.hitbox)) do
-          if k.type == "evil_bullet" then
+          if k.type == "evil" then
             signal.emit("player_meets_bullet")
             return 
           end
@@ -89,12 +89,14 @@ do
       Bullet({
         pos = self.pos + vector(-dist, -10),
         speed = 2000,
-        dir = vector(0, -1)
+        dir = vector(0, -1),
+        type = "good"
       })
       return Bullet({
         pos = self.pos + vector(dist, -10),
         speed = 2000,
-        dir = vector(0, -1)
+        dir = vector(0, -1),
+        type = "good"
       })
     end
   }
