@@ -1,4 +1,5 @@
 StateManager = require "lib.StateManager"
+SceneManager = require "lib.SceneManager"
 Controller = require "lib.Controller"
 lovelog = require "lib.lovelog"
 config = require "config"
@@ -13,9 +14,12 @@ love.load = ->
   -- love.graphics.setPointSize(2)
   -- StateManager.load "Stage1", 2
 
-love.keypressed = (kid) ->
-  if kid == "f1"
+love.keypressed = (key_id) ->
+  if key_id == "f1"
     lovelog.toggle!
-  state = StateManager.getState!
-  if state.keypressed
-    state\keypressed(Controller.getActionByKey kid)
+  key_id = Controller.getActionByKey key_id
+  SceneManager\keypressed key_id
+
+love.keyreleased = (key_id) ->
+  key_id = Controller.getActionByKey key_id
+  SceneManager\keyreleased key_id

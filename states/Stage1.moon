@@ -19,9 +19,3 @@ class Stage1
     SceneManager\draw!
     lovelog.print "FPS: " .. love.timer.getFPS!
     -- love.graphics.print
-
-  keypressed: (key) =>
-    SceneManager\keypressed key
-
-  keyreleased: (key) =>
-    SceneManager\keyreleased key

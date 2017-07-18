@@ -18,12 +18,6 @@ do
       lovelog.reset()
       SceneManager:draw()
       return lovelog.print("FPS: " .. love.timer.getFPS())
-    end,
-    keypressed = function(self, key)
-      return SceneManager:keypressed(key)
-    end,
-    keyreleased = function(self, key)
-      return SceneManager:keyreleased(key)
     end
   }
   _base_0.__index = _base_0

@@ -9,6 +9,7 @@ local SimpleEnemy = require("characters.SimpleEnemy")
 local Player = require("characters.Player")
 local HPBar = require("UI.HPBar")
 local StatsPanel = require("UI.StatsPanel")
+local StateManager = require("lib.StateManager")
 local colorize = require("lib.colorize")
 local config = require("config")
 local enemies = { }
@@ -64,9 +65,13 @@ local SceneManager = {
     return StatsPanel:draw()
   end,
   keyreleased = function(self, key)
+    local state = StateManager.getState()
+    local _ = state.keyreleased and state:keyreleased(key)
     return player and player:keyreleased(key)
   end,
   keypressed = function(self, key)
+    local state = StateManager.getState()
+    local _ = state.keypressed and state:keypressed(key)
     return player and player:keypressed(key)
   end
 }

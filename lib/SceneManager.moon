@@ -5,6 +5,7 @@ SimpleEnemy = require "characters.SimpleEnemy"
 Player = require "characters.Player"
 HPBar = require "UI.HPBar"
 StatsPanel = require "UI.StatsPanel"
+StateManager = require "lib.StateManager"
 colorize = require "lib.colorize"
 config = require "config"
 
@@ -56,9 +57,13 @@ SceneManager =
     StatsPanel\draw!
 
   keyreleased: (key) =>
+    state = StateManager.getState!
+    state.keyreleased and state\keyreleased key
     player and player\keyreleased key
 
   keypressed: (key) =>
+    state = StateManager.getState!
+    state.keypressed and state\keypressed key
     player and player\keypressed key
 
 return SceneManager
