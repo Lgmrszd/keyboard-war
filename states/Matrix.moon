@@ -1,10 +1,11 @@
 colorize = require "lib.colorize"
+config = require "config"
 
 class Matrix
   update_time: 0.03
   cur_time: 0
   matrix: {}
-  cols: 250
+  cols: 370
   rows: 40
   overall_time: 0
   letters: { "a", "z", "0", "A", "?", "!"}
@@ -27,9 +28,10 @@ class Matrix
     return ret
 
   update: (dt) =>
+    love.graphics.setFont config.fonts.art
     @overall_time += dt
-    if @overall_time > 2
-      @stop!
+    -- if @overall_time > 2
+    --   @stop!
     @cur_time += dt
     if @cur_time < @update_time
       return

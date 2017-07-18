@@ -1,4 +1,5 @@
 local StateManager = require("lib.StateManager")
+local Matrix = require("states.Matrix")
 local colorize = require("lib.colorize")
 local config = require("config")
 local menu = {
@@ -30,9 +31,8 @@ do
   local _base_0 = {
     menu = menu,
     active_node = 1,
-    enter = function(self)
-      return love.graphics.setFont(config.fonts.menu)
-    end,
+    matrix = Matrix(),
+    enter = function(self) end,
     keypressed = function(self, key_id)
       if key_id == "down" then
         self.active_node = self.active_node + 1
@@ -48,19 +48,23 @@ do
         return self.menu[self.active_node].action()
       end
     end,
-    update = function(self, dt) end,
+    update = function(self, dt)
+      love.graphics.setFont(config.fonts.menu)
+      return self.matrix:update(dt)
+    end,
     draw = function(self)
-      local x, y = 10, 10
+      self.matrix:draw()
+      local x, y = 30, 30
       for i = 1, #self.menu do
         love.graphics.setNewFont(20)
         colorize((i == self.active_node) and {
-          200,
-          250,
-          200
+          100,
+          255,
+          100
         } or {
-          200,
-          200,
-          200
+          100,
+          100,
+          100
         }, function()
           return love.graphics.printf(self.menu[i].text, x, y, 300)
         end)

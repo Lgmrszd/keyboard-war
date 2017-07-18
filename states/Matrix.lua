@@ -1,4 +1,5 @@
 local colorize = require("lib.colorize")
+local config = require("config")
 local Matrix
 do
   local _class_0
@@ -6,7 +7,7 @@ do
     update_time = 0.03,
     cur_time = 0,
     matrix = { },
-    cols = 250,
+    cols = 370,
     rows = 40,
     overall_time = 0,
     letters = {
@@ -38,10 +39,8 @@ do
       return ret
     end,
     update = function(self, dt)
+      love.graphics.setFont(config.fonts.art)
       self.overall_time = self.overall_time + dt
-      if self.overall_time > 2 then
-        self:stop()
-      end
       self.cur_time = self.cur_time + dt
       if self.cur_time < self.update_time then
         return 
