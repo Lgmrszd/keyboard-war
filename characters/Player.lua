@@ -73,7 +73,12 @@ do
       end
       self.hitbox:moveTo(self.pos.x, self.pos.y)
       if next(HC:collisions(self.hitbox)) then
-        return signal.emit("player_meets_bullet")
+        for k, v in pairs(HC:collisions(self.hitbox)) do
+          if k.type == "evil_bullet" then
+            signal.emit("player_meets_bullet")
+            return 
+          end
+        end
       end
     end,
     shoot = function(self)
