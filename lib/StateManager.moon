@@ -1,55 +1,31 @@
 gamestate = require "hump.gamestate"
-Matrix = require "states.Matrix"
 
 local switcher
 
 States = {}
-local previousState, currentState
+local previousStateId, currentStateId, currentState
 
-getState = (id) -> States[id] or  require ("states." .. id)
-
-class Loader
-  new: (id, time) =>
-    @mx = Matrix!
-    @time_had = time
-    @time_left = time
-    @state = id
-    @newstate = getState id
-    @newstate\enter!
-    gamestate\switch @
-
-  draw: =>
-    @newstate\draw!
-    @mx\draw!
-
-  update: (dt) =>
-    @mx\setAlpha 255 * @time_left / @time_had
-    print @mx.alpha
-    @time_left = @time_left - dt
-    if @time_had/@time_left > 2
-      @mx\stop!
-    if @time_left <= 0
-      switcher.switch @state
-    @mx\update dt
-
+getState = (id) -> States[id] or require("states." .. id)!
 
 switcher =
   switch: (id) ->
-    previousState = currentState
-    currentState = id
-    gamestate.switch getState id
+    previousStateId = currentStateId
+    currentStateId = id
+    currentState = getState id
+    gamestate.switch currentState
 
-  getPrevious: ->
-    return previousState
+  getPreviousStateId: ->
+    return previousStateId
 
-  getCurrent: ->
-    return currentState
+  getCurrentStateId: ->
+    return currentStateId
 
   getStateById: (id) ->
     return getState id
 
-  load: (id, time) ->
-    gamestate.switch Loader(id, time)
+  getState: ->
+    return currentState
+
 
 gamestate.registerEvents!
 

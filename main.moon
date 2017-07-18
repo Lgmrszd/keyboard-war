@@ -7,9 +7,12 @@ love.load = ->
   if arg[#arg] == "-debug"
      require("mobdebug").start!
   love.graphics.setFont love.graphics.newFont "fonts/NotoSansCJK-Regular.ttc", 10
-  StateManager.switch "Stage1"
+  StateManager.switch "MainMenu"
   -- StateManager.load "Stage1", 2
 
 love.keypressed = (kid) ->
   if kid == "f1"
     lovelog.toggle!
+  state = StateManager.getState!
+  if state.keypressed
+    state\keypressed(kid)

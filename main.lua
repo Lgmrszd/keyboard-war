@@ -6,10 +6,14 @@ love.load = function()
     require("mobdebug").start()
   end
   love.graphics.setFont(love.graphics.newFont("fonts/NotoSansCJK-Regular.ttc", 10))
-  return StateManager.switch("Stage1")
+  return StateManager.switch("MainMenu")
 end
 love.keypressed = function(kid)
   if kid == "f1" then
-    return lovelog.toggle()
+    lovelog.toggle()
+  end
+  local state = StateManager.getState()
+  if state.keypressed then
+    return state:keypressed(kid)
   end
 end
