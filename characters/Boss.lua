@@ -1,5 +1,6 @@
 local vector = require("hump.vector")
 local lovelog = require("lib.lovelog")
+local config = require("config")
 local Bullet
 Bullet = require("lib.Bullet").Bullet
 local graphics, keyboard
@@ -34,8 +35,8 @@ do
       if self.pos.x < 0 then
         self.pos.x = 0
         self.mode = 'right'
-      elseif self.pos.x > graphics.getWidth() - 200 then
-        self.pos.x = graphics.getWidth() - 200
+      elseif self.pos.x > config.scene_width then
+        self.pos.x = config.scene_width
         self.mode = 'left'
       end
       return self.hitbox:moveTo(self.pos.x, self.pos.y)
@@ -50,7 +51,7 @@ do
     end,
     draw = function(self)
       _class_0.__parent.draw(self)
-      return lovelog.print("HOLY SHIT THAT'S DEBUG")
+      return lovelog.print("Boss's hp: " .. self.hp)
     end
   }
   _base_0.__index = _base_0

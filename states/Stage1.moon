@@ -3,11 +3,14 @@ colorize = require "lib.colorize"
 Vector = require "hump.vector"
 lovelog = require "lib.lovelog"
 StatsPanel = require "UI.StatsPanel"
+HPBar = require "UI.HPBar"
 Boss = require "characters.Boss"
 import BulletManager, Bullet from require "lib.Bullet"
+config = require "config"
 
 class Stage1
-  canvas = love.graphics.newCanvas love.graphics.getWidth! - 200, love.graphics.getHeight!
+  -- canvas = love.graphics.newCanvas love.graphics.getWidth! - 200, love.graphics.getHeight!
+  canvas = love.graphics.newCanvas config.scene_width, love.graphics.getHeight!
   player = nil
   enemy = nil
   enter: =>
@@ -24,6 +27,7 @@ class Stage1
     player\update dt
     enemy\update dt
     StatsPanel\update dt
+    HPBar\update dt
 
   draw: =>
     love.graphics.setCanvas canvas
@@ -33,6 +37,7 @@ class Stage1
     enemy\draw!
     player\draw!
     BulletManager\draw!
+    HPBar\draw!
     love.graphics.setCanvas!
     love.graphics.draw canvas
     StatsPanel\draw!

@@ -3,12 +3,14 @@ local colorize = require("lib.colorize")
 local Vector = require("hump.vector")
 local lovelog = require("lib.lovelog")
 local StatsPanel = require("UI.StatsPanel")
+local HPBar = require("UI.HPBar")
 local Boss = require("characters.Boss")
 local BulletManager, Bullet
 do
   local _obj_0 = require("lib.Bullet")
   BulletManager, Bullet = _obj_0.BulletManager, _obj_0.Bullet
 end
+local config = require("config")
 local Stage1
 do
   local _class_0
@@ -27,7 +29,8 @@ do
       BulletManager:update(dt)
       player:update(dt)
       enemy:update(dt)
-      return StatsPanel:update(dt)
+      StatsPanel:update(dt)
+      return HPBar:update(dt)
     end,
     draw = function(self)
       love.graphics.setCanvas(canvas)
@@ -43,6 +46,7 @@ do
       enemy:draw()
       player:draw()
       BulletManager:draw()
+      HPBar:draw()
       love.graphics.setCanvas()
       love.graphics.draw(canvas)
       return StatsPanel:draw()
@@ -63,7 +67,7 @@ do
   })
   _base_0.__class = _class_0
   local self = _class_0
-  canvas = love.graphics.newCanvas(love.graphics.getWidth() - 200, love.graphics.getHeight())
+  canvas = love.graphics.newCanvas(config.scene_width, love.graphics.getHeight())
   player = nil
   enemy = nil
   Stage1 = _class_0

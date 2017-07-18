@@ -1,4 +1,5 @@
 colorize = require "lib.colorize"
+config = require "config"
 import graphics from love
 
 class StatsPanel
@@ -8,6 +9,6 @@ class StatsPanel
     colorize {20, 0, 20}, -> graphics.rectangle "fill", 0, 0, canvas\getWidth!, canvas\getHeight!
     graphics.printf "WHAT", 10, 10, 100
     graphics.setCanvas!
-    graphics.draw canvas, love.graphics.getWidth! - 200, 0
+    graphics.draw canvas, config.scene_width, 0
 
   update: (dt) =>
