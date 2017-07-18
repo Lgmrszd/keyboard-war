@@ -60,7 +60,10 @@ class player extends Basechar
     @hitbox\moveTo @pos.x, @pos.y
 
     if next(HC\collisions(@hitbox))
-      signal.emit "player_meets_bullet"
+      for k, v in pairs HC\collisions(@hitbox)
+        if k.type == "evil_bullet"
+          signal.emit "player_meets_bullet"
+          return
 
 
 

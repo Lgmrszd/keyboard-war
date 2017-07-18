@@ -41,6 +41,7 @@ class Bullet
     @dir = args.dir or vector(0, 0)
     @char = args.char or "*"
     @hitbox = HC\circle(@pos.x, @pos.y, @rad)
+    @hitbox.type = 'evil_bullet'
 
     BulletManager\addBullet @
 
