@@ -20,6 +20,9 @@ class player extends Basechar
     if @draw_hitbox
       colorize {255, 0, 0}, -> love.graphics.circle "fill", @pos.x, @pos.y, @hitbox_radius
     lovelog.print "Player hitbox rad: " .. @hitbox_radius
+    lovelog.print "Player health: " .. @health
+    lovelog.print "Player x: " .. @pos.x
+
 
   update: (dt) =>
     vec = vector 0

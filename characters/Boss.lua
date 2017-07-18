@@ -1,20 +1,42 @@
+local vector = require("hump.vector")
+local lovelog = require("lib.lovelog")
 local Bullet
 Bullet = require("lib.Bullet").Bullet
+local graphics, keyboard
+do
+  local _obj_0 = love
+  graphics, keyboard = _obj_0.graphics, _obj_0.keyboard
+end
 local Vector = require("hump.vector")
 local Basechar = require("lib.Basechar")
 local HC = require("HCWorld")
+local MaxHp = 200
 local Enemy
 do
   local _class_0
   local _parent_0 = Basechar
   local _base_0 = {
     update = function(self, dt)
+      local vec = vector(0)
       if math.random() > 0.99 then
         self.mode = (self.mode == "right") and "left" or "right"
         self.text = self.texts[self.mode]
       end
       if math.random() > 0.6 then
         self:shoot()
+      end
+      if self.mode == "left" then
+        vec.x = -1
+      else
+        vec.x = 1
+      end
+      self.pos = self.pos + dt * self.speed * vec:normalized()
+      if self.pos.x < 0 then
+        self.pos.x = 0
+        self.mode = 'right'
+      elseif self.pos.x > graphics.getWidth() - 200 then
+        self.pos.x = graphics.getWidth() - 200
+        self.mode = 'left'
       end
       return self.hitbox:moveTo(self.pos.x, self.pos.y)
     end,
@@ -25,6 +47,10 @@ do
         dir = Vector(math.random() - 0.5, math.random()):normalized(),
         char = "9"
       })
+    end,
+    draw = function(self)
+      _class_0.__parent.draw(self)
+      return lovelog.print("HOLY SHIT THAT'S DEBUG")
     end
   }
   _base_0.__index = _base_0
@@ -34,6 +60,7 @@ do
       self.hitbox_radius = 10
       self.hitbox = HC:circle(self.pos.x, self.pos.y, self.hitbox_radius)
       self.pos = pos or self.pos
+      self.hp = MaxHp
       self.texts = {
         right = "(凸ಠ益ಠ)凸",
         left = "凸(ಠ益ಠ凸)"
@@ -41,6 +68,7 @@ do
       self.mode = "right"
       self.text = [[(凸ಠ益ಠ)凸]]
       self.width = 100
+      self.speed = 100
     end,
     __base = _base_0,
     __name = "Enemy",
