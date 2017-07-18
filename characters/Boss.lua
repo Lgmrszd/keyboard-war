@@ -1,4 +1,5 @@
 local vector = require("hump.vector")
+local signal = require("hump.signal")
 local lovelog = require("lib.lovelog")
 local config = require("config")
 local Bullet
@@ -11,7 +12,6 @@ end
 local Vector = require("hump.vector")
 local Basechar = require("lib.Basechar")
 local HC = require("HCWorld")
-local MaxHp = 200
 local Enemy
 do
   local _class_0
@@ -39,6 +39,14 @@ do
         self.pos.x = config.scene_width
         self.mode = 'left'
       end
+      if next(HC:collisions(self.hitbox)) then
+        for k, v in pairs(HC:collisions(self.hitbox)) do
+          if k.type == "good" then
+            self.hp = self.hp - 1
+            signal.emit("boss_hp", self.max_hp, self.hp)
+          end
+        end
+      end
       return self.hitbox:moveTo(self.pos.x, self.pos.y)
     end,
     shoot = function(self)
@@ -46,7 +54,8 @@ do
         pos = self.pos - Vector(0, 20),
         speed = math.random(30, 200),
         dir = Vector(math.random() - 0.5, math.random()):normalized(),
-        char = "9"
+        char = "9",
+        type = "evil"
       })
     end,
     draw = function(self)
@@ -61,7 +70,8 @@ do
       self.hitbox_radius = 10
       self.hitbox = HC:circle(self.pos.x, self.pos.y, self.hitbox_radius)
       self.pos = pos or self.pos
-      self.hp = MaxHp
+      self.max_hp = 100
+      self.hp = self.max_hp
       self.texts = {
         right = "(凸ಠ益ಠ)凸",
         left = "凸(ಠ益ಠ凸)"

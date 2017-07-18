@@ -72,7 +72,7 @@ do
       self.dir = args.dir or vector(0, 0)
       self.char = args.char or "*"
       self.hitbox = HC:circle(self.pos.x, self.pos.y, self.rad)
-      self.hitbox.type = 'evi_bullet'
+      self.hitbox.type = args.type or "evil"
       return BulletManager:addBullet(self)
     end,
     __base = _base_0,
