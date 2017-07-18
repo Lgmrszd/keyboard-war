@@ -12,7 +12,9 @@ local menu = {
   {
     id = "settings",
     text = "Settings",
-    submenu = { }
+    action = function()
+      return error("TODO")
+    end
   },
   {
     id = "exit",
@@ -33,14 +35,16 @@ do
     end,
     keypressed = function(self, key_id)
       if key_id == "down" then
-        if love.keyboard.isDown("down") then
-          self.active_node = self.active_node + 1
-          if self.active_node > #self.menu then
-            self.active_node = 1
-          end
+        self.active_node = self.active_node + 1
+        if self.active_node > #self.menu then
+          self.active_node = 1
         end
-      end
-      if key_id == "z" then
+      elseif key_id == "up" then
+        self.active_node = self.active_node - 1
+        if self.active_node == 0 then
+          self.active_node = #self.menu
+        end
+      elseif key_id == "z" then
         return self.menu[self.active_node].action()
       end
     end,

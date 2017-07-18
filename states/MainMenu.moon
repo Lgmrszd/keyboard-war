@@ -4,7 +4,7 @@ config = require "config"
 
 menu = {
   { id: "play", text: "Play", action: -> StateManager.switch "Stage1"}
-  { id: "settings", text: "Settings", submenu: {} }
+  { id: "settings", text: "Settings", action: -> error "TODO" }
   { id: "exit", text: "Exit", action: -> love.event.quit(0)}
 }
 
@@ -17,11 +17,14 @@ class MainMenu
 
   keypressed: (key_id) =>
     if key_id == "down"
-      if love.keyboard.isDown("down")
-        @active_node += 1
-        if @active_node > #@menu
-          @active_node = 1
-    if key_id == "z"
+      @active_node += 1
+      if @active_node > #@menu
+        @active_node = 1
+    elseif key_id == "up"
+      @active_node -= 1
+      if @active_node == 0
+        @active_node = #@menu
+    elseif key_id == "z"
       @menu[@active_node].action!
 
   update: (dt) =>
