@@ -1,4 +1,4 @@
-vector = require "hump.vector"
+Vector = require "hump.vector"
 signal = require "hump.signal"
 lovelog = require "lib.lovelog"
 colorize = require "lib.colorize"
@@ -9,13 +9,14 @@ Controller = require "lib.Controller"
 Basechar = require "lib.Basechar"
 HC = require "HCWorld"
 
-class player extends Basechar
+class Player extends Basechar
   -- text: "(･θ･)"
   text: "(=^･ω･^=)"
   width: 70
   speed: 300
   slowspeed: 100
   health: 3 -- lives
+  keys_locked: true
 
   draw: =>
     super\draw!
@@ -25,9 +26,11 @@ class player extends Basechar
     lovelog.print "Player health: " .. @health
     lovelog.print "Player x: " .. @pos.x
 
-
   update: (dt) =>
-    vec = vector 0
+    print @keys_locked
+    if @keys_locked
+      return
+    vec = Vector 0
     if Controller.pressed "left" then
       vec.x = -1
     elseif Controller.pressed "right" then
@@ -66,21 +69,25 @@ class player extends Basechar
           signal.emit "player_meets_bullet"
           return
 
-
-
   shoot: =>
     dist = 20
     if Controller.pressed "lshift"
       dist = 10
     Bullet{
-      pos: @pos + vector(-dist, -10),
+      pos: @pos + Vector(-dist, -10),
       speed: 2000,
-      dir: vector 0, -1
+      dir: Vector 0, -1
       type: "good"
     }
     Bullet{
-      pos: @pos + vector(dist, -10),
+      pos: @pos + Vector(dist, -10),
       speed: 2000,
-      dir: vector 0, -1
+      dir: Vector 0, -1
       type: "good"
     }
+
+  keyreleased: (key) =>
+    @keys_locked = false
+
+  keypressed: (key) =>
+    -- TODO?

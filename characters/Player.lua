@@ -1,4 +1,4 @@
-local vector = require("hump.vector")
+local Vector = require("hump.vector")
 local signal = require("hump.signal")
 local lovelog = require("lib.lovelog")
 local colorize = require("lib.colorize")
@@ -10,7 +10,7 @@ graphics = love.graphics
 local Controller = require("lib.Controller")
 local Basechar = require("lib.Basechar")
 local HC = require("HCWorld")
-local player
+local Player
 do
   local _class_0
   local _parent_0 = Basechar
@@ -20,6 +20,7 @@ do
     speed = 300,
     slowspeed = 100,
     health = 3,
+    keys_locked = true,
     draw = function(self)
       _class_0.__parent.draw(self)
       if self.draw_hitbox then
@@ -36,7 +37,11 @@ do
       return lovelog.print("Player x: " .. self.pos.x)
     end,
     update = function(self, dt)
-      local vec = vector(0)
+      print(self.keys_locked)
+      if self.keys_locked then
+        return 
+      end
+      local vec = Vector(0)
       if Controller.pressed("left") then
         vec.x = -1
       elseif Controller.pressed("right") then
@@ -85,18 +90,22 @@ do
         dist = 10
       end
       Bullet({
-        pos = self.pos + vector(-dist, -10),
+        pos = self.pos + Vector(-dist, -10),
         speed = 2000,
-        dir = vector(0, -1),
+        dir = Vector(0, -1),
         type = "good"
       })
       return Bullet({
-        pos = self.pos + vector(dist, -10),
+        pos = self.pos + Vector(dist, -10),
         speed = 2000,
-        dir = vector(0, -1),
+        dir = Vector(0, -1),
         type = "good"
       })
-    end
+    end,
+    keyreleased = function(self, key)
+      self.keys_locked = false
+    end,
+    keypressed = function(self, key) end
   }
   _base_0.__index = _base_0
   setmetatable(_base_0, _parent_0.__base)
@@ -105,7 +114,7 @@ do
       return _class_0.__parent.__init(self, ...)
     end,
     __base = _base_0,
-    __name = "player",
+    __name = "Player",
     __parent = _parent_0
   }, {
     __index = function(cls, name)
@@ -129,6 +138,6 @@ do
   if _parent_0.__inherited then
     _parent_0.__inherited(_parent_0, _class_0)
   end
-  player = _class_0
+  Player = _class_0
   return _class_0
 end
