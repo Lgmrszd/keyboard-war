@@ -5,7 +5,6 @@ love.load = function()
   if arg[#arg] == "-debug" then
     require("mobdebug").start()
   end
-  love.graphics.setFont(love.graphics.newFont("fonts/NotoSansCJK-Regular.ttc", 10))
   return StateManager.switch("MainMenu")
 end
 love.keypressed = function(kid)

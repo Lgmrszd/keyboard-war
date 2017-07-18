@@ -14,6 +14,7 @@ class Stage1
   player = nil
   enemy = nil
   enter: =>
+    love.graphics.setFont config.fonts.art
     player = Player!
     enemy = Boss Vector(300, 50)
     Bullet{

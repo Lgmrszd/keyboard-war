@@ -1,5 +1,6 @@
 StateManager = require "lib.StateManager"
 colorize = require "lib.colorize"
+config = require "config"
 
 menu = {
   { id: "play", text: "Play", action: -> StateManager.switch "Stage1"}
@@ -10,6 +11,9 @@ menu = {
 class MainMenu
   menu: menu
   active_node: 1
+
+  enter: =>
+    love.graphics.setFont config.fonts.menu
 
   keypressed: (key_id) =>
     if key_id == "down"

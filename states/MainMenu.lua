@@ -1,5 +1,6 @@
 local StateManager = require("lib.StateManager")
 local colorize = require("lib.colorize")
+local config = require("config")
 local menu = {
   {
     id = "play",
@@ -27,6 +28,9 @@ do
   local _base_0 = {
     menu = menu,
     active_node = 1,
+    enter = function(self)
+      return love.graphics.setFont(config.fonts.menu)
+    end,
     keypressed = function(self, key_id)
       if key_id == "down" then
         if love.keyboard.isDown("down") then

@@ -17,6 +17,7 @@ do
   local canvas, player, enemy
   local _base_0 = {
     enter = function(self)
+      love.graphics.setFont(config.fonts.art)
       player = Player()
       enemy = Boss(Vector(300, 50))
       Bullet({

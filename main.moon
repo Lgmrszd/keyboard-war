@@ -6,7 +6,6 @@ love.load = ->
   math.randomseed os.time!
   if arg[#arg] == "-debug"
      require("mobdebug").start!
-  love.graphics.setFont love.graphics.newFont "fonts/NotoSansCJK-Regular.ttc", 10
   StateManager.switch "MainMenu"
   -- StateManager.load "Stage1", 2
 
