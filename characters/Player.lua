@@ -32,7 +32,9 @@ do
           return love.graphics.circle("fill", self.pos.x, self.pos.y, self.hitbox_radius)
         end)
       end
-      return lovelog.print("Player hitbox rad: " .. self.hitbox_radius)
+      lovelog.print("Player hitbox rad: " .. self.hitbox_radius)
+      lovelog.print("Player health: " .. self.health)
+      return lovelog.print("Player x: " .. self.pos.x)
     end,
     update = function(self, dt)
       local vec = vector(0)
