@@ -22,15 +22,17 @@ class Enemy extends Basechar
     @direction = "right"
     @mode = "initiate"
     @text = [[(凸ಠ益ಠ)凸]]
+    -- @circle_bullets_dt += dt
     @width = 100
     @speed = 100
-    @circle_bullets_dt = 0
-    @circle_bullets_da = 0
+    @rage_speed = 300
+    @mode_dt = 0
     @modes = {
       "initiate": (dt) =>
-        -- super\update dt
-        @circle_bullets_dt += dt
-        @circleBulletsTimer!
+        @mode_dt = 0
+        @mode = "walk"
+      "walk": (dt) =>
+        -- @circleBulletsTimer!
         vec = vector 0
         if math.random! > 0.99
           @direction = (@direction == "right") and "left" or "right"
@@ -44,10 +46,46 @@ class Enemy extends Basechar
         @pos = @pos + dt * @speed * vec\normalized!
         if @pos.x < 0
           @pos.x = 0
-          @direction = 'right'
+          @direction = "right"
         elseif @pos.x > config.scene_width
           @pos.x = config.scene_width
-          @direction = 'left'
+          @direction = "left"
+        @mode_dt += dt
+        if @mode_dt > 5
+          @mode_dt = 0
+          @mode = "rage"
+          @circle_bullets_dt = 0
+          @circle_bullets_da = 0
+          -- TODO: fix "goto_center"
+          -- @next_mode = "rage"
+          -- @mode = "goto_center"
+      "goto_center": (dt) =>
+        -- @mode = @next_mode
+        cx = config.scene_width/2
+        print "pos.x", pos.x, "cx", cx
+        @direction = (pos.x > cx) and "left" or "right"
+        vec = vector 0
+        if @direction == "left" then
+          vec.x = -1
+        else
+          vec.x = 1
+        @pos = @pos + dt * @rage_speed * vec\normalized!
+        if (@pos.x < (cx + 1)) and (@pos.x > (cx - 1))
+          @pos.x = cx
+          @mode = @next_mode
+
+      "rage": (dt) =>
+        @circle_bullets_dt += dt
+        @circleBulletsTimer!
+        @mode_dt += dt
+        if @mode_dt > 5
+          @circle_bullets_dt = 0
+          @circle_bullets_da = 0
+          @mode_dt = 0
+          @mode = "walk"
+          -- TODO: fix "goto_center"
+          -- @next_mode = "walk"
+          -- @mode = "goto_center"
 
       "death": (dt) =>
         signal.emit("Stage1_end")
@@ -83,30 +121,27 @@ class Enemy extends Basechar
     bullet.update = (dt) =>
       @pos += @speed * dt * @dir
       @hitbox\moveTo @pos.x, @pos.y
-      if @pos.y < 0 or @pos.y > love.graphics.getHeight! or @pos.x < 0 or @pos.x > config.scene_width
+      if @pos.y < 0 or @pos.y > config.scene_height or @pos.x < 0 or @pos.x > config.scene_width
         @remove!
 
-  bullet2: (cx, cy, r, a) =>
-    CircleBullet{
-      center_pos: Vector(cx, cy)
-      r_spawn: r
-      pos: Vector(cx, cy) + vector.fromPolar(a, r)
-      speed: 80
-      r_vector: vector.fromPolar(a, r)
-      -- dir: Vector(math.random! - 0.5, math.random!)\normalized!
-      char: "*"
-      type: "evil"
-      -- rad: 10
-    }
-    --print bullet.pos, bullet.center_pos, cx, cy
-    --print vector.fromPolar(a, r)
+
 
 
 
   spawnCircleBullets: (n, da) =>
     for i = 0, n-1
       a = i*(math.pi*2)/n
-      @bullet2 config.scene_width/2, @pos.y, 50, a + da
+      cx, cy, r, a = config.scene_width/2, @pos.y, 1, a + da
+      CircleBullet{
+        center_pos: Vector(cx, cy)
+        r_spawn: r
+        pos: Vector(cx, cy) + vector.fromPolar(a, r)
+        speed: 80
+        --r_vector: vector.fromPolar(a, r)
+        -- dir: Vector(math.random! - 0.5, math.random!)\normalized!
+        char: "*"
+        type: "evil"
+      }
 
   shoot: =>
     @bullet1 @pos.x, @pos.y + 20
