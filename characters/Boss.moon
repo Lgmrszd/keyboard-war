@@ -19,12 +19,36 @@ class Enemy extends Basechar
       right: "(凸ಠ益ಠ)凸"
       left: "凸(ಠ益ಠ凸)"
     }
-    @mode = "right"
+    @direction = "right"
+    @mode = "initiate"
     @text = [[(凸ಠ益ಠ)凸]]
     @width = 100
     @speed = 100
     @circle_bullets_dt = 0
     @circle_bullets_da = 0
+    @modes = {
+      "initiate": (dt) =>
+        -- super\update dt
+        @circle_bullets_dt += dt
+        @circleBulletsTimer!
+        vec = vector 0
+        if math.random! > 0.99
+          @direction = (@direction == "right") and "left" or "right"
+          @text = @texts[@direction]
+        if math.random! > 0.96
+          @shoot!
+        if @direction == "left" then
+          vec.x = -1
+        else
+          vec.x = 1
+        @pos = @pos + dt * @speed * vec\normalized!
+        if @pos.x < 0
+          @pos.x = 0
+          @direction = 'right'
+        elseif @pos.x > config.scene_width
+          @pos.x = config.scene_width
+          @direction = 'left'
+    }
 
   circleBulletsTimer: =>
     print @circle_bullets_dt
@@ -34,26 +58,7 @@ class Enemy extends Basechar
       @circle_bullets_da += 1
 
   update: (dt) =>
-    -- super\update dt
-    @circle_bullets_dt += dt
-    @circleBulletsTimer!
-    vec = vector 0
-    if math.random! > 0.99
-      @mode = (@mode == "right") and "left" or "right"
-      @text = @texts[@mode]
-    if math.random! > 0.96
-      @shoot!
-    if @mode == "left" then
-      vec.x = -1
-    else
-      vec.x = 1
-    @pos = @pos + dt * @speed * vec\normalized!
-    if @pos.x < 0
-      @pos.x = 0
-      @mode = 'right'
-    elseif @pos.x > config.scene_width
-      @pos.x = config.scene_width
-      @mode = 'left'
+    @modes[@mode](@,dt)
     if next(HC\collisions(@hitbox))
       for k, v in pairs HC\collisions(@hitbox)
         if k.type == "good"

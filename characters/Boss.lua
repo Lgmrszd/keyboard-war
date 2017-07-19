@@ -29,29 +29,7 @@ do
       end
     end,
     update = function(self, dt)
-      self.circle_bullets_dt = self.circle_bullets_dt + dt
-      self:circleBulletsTimer()
-      local vec = vector(0)
-      if math.random() > 0.99 then
-        self.mode = (self.mode == "right") and "left" or "right"
-        self.text = self.texts[self.mode]
-      end
-      if math.random() > 0.96 then
-        self:shoot()
-      end
-      if self.mode == "left" then
-        vec.x = -1
-      else
-        vec.x = 1
-      end
-      self.pos = self.pos + dt * self.speed * vec:normalized()
-      if self.pos.x < 0 then
-        self.pos.x = 0
-        self.mode = 'right'
-      elseif self.pos.x > config.scene_width then
-        self.pos.x = config.scene_width
-        self.mode = 'left'
-      end
+      self.modes[self.mode](self, dt)
       if next(HC:collisions(self.hitbox)) then
         for k, v in pairs(HC:collisions(self.hitbox)) do
           if k.type == "good" then
@@ -119,12 +97,40 @@ do
         right = "(凸ಠ益ಠ)凸",
         left = "凸(ಠ益ಠ凸)"
       }
-      self.mode = "right"
+      self.direction = "right"
+      self.mode = "initiate"
       self.text = [[(凸ಠ益ಠ)凸]]
       self.width = 100
       self.speed = 100
       self.circle_bullets_dt = 0
       self.circle_bullets_da = 0
+      self.modes = {
+        ["initiate"] = function(self, dt)
+          self.circle_bullets_dt = self.circle_bullets_dt + dt
+          self:circleBulletsTimer()
+          local vec = vector(0)
+          if math.random() > 0.99 then
+            self.direction = (self.direction == "right") and "left" or "right"
+            self.text = self.texts[self.direction]
+          end
+          if math.random() > 0.96 then
+            self:shoot()
+          end
+          if self.direction == "left" then
+            vec.x = -1
+          else
+            vec.x = 1
+          end
+          self.pos = self.pos + dt * self.speed * vec:normalized()
+          if self.pos.x < 0 then
+            self.pos.x = 0
+            self.direction = 'right'
+          elseif self.pos.x > config.scene_width then
+            self.pos.x = config.scene_width
+            self.direction = 'left'
+          end
+        end
+      }
     end,
     __base = _base_0,
     __name = "Enemy",
