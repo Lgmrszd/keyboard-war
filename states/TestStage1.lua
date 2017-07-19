@@ -11,6 +11,40 @@ local enemies = {
       self.pos = self.pos + 200 * Vector(1, 1) * dt
     end,
     shoot = function(self)
+      if math.random() > 0.9 then
+        return Bullet({
+          pos = self.pos + Vector(0, 10),
+          speed = math.random(50, 100),
+          dir = Vector(0.2 * (math.random() - 0.5), math.random()):normalized(),
+          char = "*"
+        })
+      end
+    end
+  },
+  simple2 = {
+    pos = Vector(595, 10),
+    move = function(self, dt)
+      self.pos = self.pos + 200 * Vector(-1, 1) * dt
+    end,
+    shoot = function(self)
+      if math.random() > 0.9 then
+        return Bullet({
+          pos = self.pos + Vector(0, 10),
+          speed = math.random(50, 100),
+          dir = Vector(0.2 * (math.random() - 0.5), math.random()):normalized(),
+          char = "*"
+        })
+      end
+    end
+  },
+  challenging1 = {
+    pos = Vector(5, 10),
+    text = "(・`ω´・)",
+    width = 60,
+    move = function(self, dt)
+      self.pos = self.pos + 200 * Vector(1, 1) * dt
+    end,
+    shoot = function(self)
       return Bullet({
         pos = self.pos + Vector(0, 10),
         speed = math.random(50, 100),
@@ -19,8 +53,10 @@ local enemies = {
       })
     end
   },
-  simple2 = {
+  challenging2 = {
     pos = Vector(595, 10),
+    text = "(・`ω´・)",
+    width = 60,
     move = function(self, dt)
       self.pos = self.pos + 200 * Vector(-1, 1) * dt
     end,
@@ -45,8 +81,8 @@ local events = {
   [2] = {
     time = 2,
     action = function()
-      SceneManager:spawnEnemy(enemies.simple1)
-      return SceneManager:spawnEnemy(enemies.simple2)
+      SceneManager:spawnEnemy(enemies.challenging1)
+      return SceneManager:spawnEnemy(enemies.challenging2)
     end
   },
   [3] = {

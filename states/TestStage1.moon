@@ -10,6 +10,34 @@ enemies = {
     move: (dt) =>
       @pos = @pos + 200 * Vector(1, 1) * dt
     shoot: =>
+      if math.random! > 0.9
+        Bullet{
+          pos: @pos + Vector(0, 10)
+          speed: math.random(50, 100)
+          dir: Vector(0.2*(math.random!-0.5), math.random!)\normalized!
+          char: "*"
+        }
+  }
+  simple2: {
+    pos: Vector(595, 10) -- FIXME
+    move: (dt) =>
+      @pos = @pos + 200 * Vector(-1, 1) * dt
+    shoot: =>
+      if math.random! > 0.9
+        Bullet{
+          pos: @pos + Vector(0, 10)
+          speed: math.random(50, 100)
+          dir: Vector(0.2*(math.random!-0.5), math.random!)\normalized!
+          char: "*"
+        }
+  }
+  challenging1: {
+    pos: Vector(5, 10) -- Too bad we have to use px coords atm. FIXME
+    text: "(・`ω´・)"
+    width: 60
+    move: (dt) =>
+      @pos = @pos + 200 * Vector(1, 1) * dt
+    shoot: =>
       Bullet{
         pos: @pos + Vector(0, 10)
         speed: math.random(50, 100)
@@ -17,8 +45,10 @@ enemies = {
         char: "*"
       }
   }
-  simple2: {
+  challenging2: {
     pos: Vector(595, 10) -- FIXME
+    text: "(・`ω´・)"
+    width: 60
     move: (dt) =>
       @pos = @pos + 200 * Vector(-1, 1) * dt
     shoot: =>
@@ -41,8 +71,8 @@ events = {
   [2]: {
     time: 2
     action: ->
-      SceneManager\spawnEnemy enemies.simple1
-      SceneManager\spawnEnemy enemies.simple2
+      SceneManager\spawnEnemy enemies.challenging1
+      SceneManager\spawnEnemy enemies.challenging2
   }
   [3]: {
     time: 3

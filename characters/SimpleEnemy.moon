@@ -6,11 +6,10 @@ HC = require "HCWorld"
 
 class Enemy extends Basechar
   new: (arg) =>
-    @pos = arg.pos or @pos
-    @move = arg.move
-    @shoot = arg.shoot
-    @height = 15
-    @width = 30
+    for k, v in pairs arg
+      @[k] = v
+    @height = @height or 15
+    @width = @width or 30
     hw, hh = @width/2, @height/2
     @hitbox = HC\polygon @pos.x - hw, @pos.y - hh,
                          @pos.x + hw, @pos.y - hh,

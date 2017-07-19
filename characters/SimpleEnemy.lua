@@ -30,11 +30,11 @@ do
   setmetatable(_base_0, _parent_0.__base)
   _class_0 = setmetatable({
     __init = function(self, arg)
-      self.pos = arg.pos or self.pos
-      self.move = arg.move
-      self.shoot = arg.shoot
-      self.height = 15
-      self.width = 30
+      for k, v in pairs(arg) do
+        self[k] = v
+      end
+      self.height = self.height or 15
+      self.width = self.width or 30
       local hw, hh = self.width / 2, self.height / 2
       self.hitbox = HC:polygon(self.pos.x - hw, self.pos.y - hh, self.pos.x + hw, self.pos.y - hh, self.pos.x + hw, self.pos.y + hh, self.pos.x - hw, self.pos.y + hh)
     end,
