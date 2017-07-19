@@ -1,5 +1,7 @@
 local SceneManager = require("lib.SceneManager")
 local Vector = require("hump.vector")
+local Bullet
+Bullet = require("lib.Bullet").Bullet
 local lovelog = require("lib.lovelog")
 local config = require("config")
 local Stage1
@@ -10,7 +12,20 @@ do
     enter = function(self)
       love.graphics.setFont(config.fonts.art)
       SceneManager:spawnPlayer(Vector(0.5, 0.9))
-      return SceneManager:spawnEnemy(Vector(0.5, 0.5))
+      return SceneManager:spawnEnemy({
+        pos = Vector(0.5, 0.5),
+        move = function(self, dt)
+          self.pos = self.pos + 200 * Vector(1, 1) * dt
+        end,
+        shoot = function(self)
+          return Bullet({
+            pos = self.pos + Vector(0, 10),
+            speed = math.random(50, 100),
+            dir = Vector(0.2 * (math.random() - 0.5), math.random()):normalized(),
+            char = "*"
+          })
+        end
+      })
     end,
     update = function(self, dt)
       return SceneManager:update(dt)

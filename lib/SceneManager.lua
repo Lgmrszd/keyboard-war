@@ -32,8 +32,9 @@ local SceneManager = {
     local boss = Boss(Vector(pos_x, pos_y))
     enemies[boss] = true
   end,
-  spawnEnemy = function(self)
-    enemies[SimpleEnemy(Vector(300, 50))] = true
+  spawnEnemy = function(self, arg)
+    local enemy = SimpleEnemy(arg)
+    enemies[enemy] = true
   end,
   removeEnemy = function(self, obj)
     enemies[obj] = nil

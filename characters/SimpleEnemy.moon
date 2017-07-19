@@ -5,8 +5,10 @@ signal = require "hump.signal"
 HC = require "HCWorld"
 
 class Enemy extends Basechar
-  new: (pos) =>
-    @pos = pos or @pos
+  new: (arg) =>
+    @pos = arg.pos or @pos
+    @move = arg.move
+    @shoot = arg.shoot
     @height = 15
     @width = 30
     hw, hh = @width/2, @height/2
@@ -17,18 +19,13 @@ class Enemy extends Basechar
 
   update: (dt) =>
     -- super\update dt
-    if math.random! > 0.99
-      @shoot!
+    if @move
+      @move dt
+    @hitbox\moveTo @pos.x, @pos.y
+    if @shoot
+      @shoot dt
     if next(HC\collisions(@hitbox))
       for k, v in pairs HC\collisions(@hitbox)
         if k.type == "good"
           -- error @hitbox
           signal.emit "dead", @
-
-  shoot: =>
-    Bullet{
-      pos: @pos - Vector(0, 20)
-      speed: math.random(1, 100)
-      dir: Vector(math.random!*2 - 1, math.random!)\normalized!
-      char: "*"
-    }

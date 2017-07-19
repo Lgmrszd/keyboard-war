@@ -31,8 +31,9 @@ SceneManager =
     boss = Boss Vector(pos_x, pos_y)
     enemies[boss] = true
 
-  spawnEnemy: =>
-    enemies[SimpleEnemy Vector(300, 50)] = true
+  spawnEnemy: (arg) =>
+    enemy = SimpleEnemy arg
+    enemies[enemy] = true
 
   removeEnemy: (obj) =>
     enemies[obj] = nil

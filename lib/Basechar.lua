@@ -8,6 +8,7 @@ do
   local _base_0 = {
     pos = Vector(0, 0),
     width = 50,
+    height = 20,
     text = "x_x",
     hitbox_radius = 3,
     color = {
