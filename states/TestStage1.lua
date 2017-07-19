@@ -34,25 +34,47 @@ local enemies = {
     end
   }
 }
+local events = {
+  [1] = {
+    time = 0,
+    action = function()
+      SceneManager:spawnEnemy(enemies.simple1)
+      return SceneManager:spawnEnemy(enemies.simple2)
+    end
+  },
+  [2] = {
+    time = 2,
+    action = function()
+      SceneManager:spawnEnemy(enemies.simple1)
+      return SceneManager:spawnEnemy(enemies.simple2)
+    end
+  },
+  [3] = {
+    time = 3,
+    action = function()
+      return SceneManager:spawnBoss(Vector(0.5, 0.05))
+    end
+  }
+}
 local Stage1
 do
   local _class_0
   local enemy
   local _base_0 = {
+    events = events,
     enter = function(self)
       self.time = 0
+      self.current_event = 1
       love.graphics.setFont(config.fonts.art)
-      SceneManager:spawnPlayer(Vector(0.5, 0.9))
-      SceneManager:spawnEnemy(enemies.simple1)
-      return SceneManager:spawnEnemy(enemies.simple2)
+      return SceneManager:spawnPlayer(Vector(0.5, 0.9))
     end,
     update = function(self, dt)
       SceneManager:update(dt)
       self.time = self.time + dt
-      if self.time > 3 and (not self.spawned) then
-        self.spawned = true
-        SceneManager:spawnEnemy(enemies.simple1)
-        return SceneManager:spawnEnemy(enemies.simple2)
+      local event = self.events[self.current_event]
+      if event and self.time >= event.time then
+        self.current_event = self.current_event + 1
+        return event.action()
       end
     end,
     draw = function(self)
