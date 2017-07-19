@@ -89,7 +89,66 @@ do
   _base_0.__class = _class_0
   Bullet = _class_0
 end
+local CircleBullet
+do
+  local _class_0
+  local _parent_0 = Bullet
+  local _base_0 = {
+    update = function(self, dt)
+      print("radius ", (self.r_spawn / self.r_vector:toPolar()["y"]))
+      self.r_vector = self.r_vector:rotated((self.r_spawn / self.r_vector:toPolar()["y"]) * self.anglespeed * dt)
+      self.angle = self.r_vector:toPolar()["x"]
+      self.r_vector = self.r_vector + (self.r_vector:normalized() * self.speed * dt)
+      self.speed = self.speed + self.ac
+      self.pos = self.center_pos + self.r_vector
+      self.hitbox:moveTo(self.pos.x, self.pos.y)
+      local scene_corner = vector(0, config.scene_height)
+      local dr = scene_corner - self.center_pos
+      if dr:toPolar()["y"] < self.r_vector:toPolar()["y"] then
+        return self:remove()
+      end
+    end
+  }
+  _base_0.__index = _base_0
+  setmetatable(_base_0, _parent_0.__base)
+  _class_0 = setmetatable({
+    __init = function(self, args)
+      _class_0.__parent.__init(self, args)
+      self.center_pos = args.center_pos
+      self.r_vector = args.r_vector
+      self.anglespeed = args.anglespeed or 1
+      self.r_spawn = args.r_spawn
+      self.ac = args.ac or 2
+    end,
+    __base = _base_0,
+    __name = "CircleBullet",
+    __parent = _parent_0
+  }, {
+    __index = function(cls, name)
+      local val = rawget(_base_0, name)
+      if val == nil then
+        local parent = rawget(cls, "__parent")
+        if parent then
+          return parent[name]
+        end
+      else
+        return val
+      end
+    end,
+    __call = function(cls, ...)
+      local _self_0 = setmetatable({}, _base_0)
+      cls.__init(_self_0, ...)
+      return _self_0
+    end
+  })
+  _base_0.__class = _class_0
+  if _parent_0.__inherited then
+    _parent_0.__inherited(_parent_0, _class_0)
+  end
+  CircleBullet = _class_0
+end
 return {
+  CircleBullet = CircleBullet,
   Bullet = Bullet,
   BulletManager = BulletManager
 }

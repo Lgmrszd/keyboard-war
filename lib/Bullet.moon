@@ -61,7 +61,30 @@ class Bullet
     HC\remove @hitbox
     BulletManager\removeBullet @
 
+
+class CircleBullet extends Bullet
+  new: (args) =>
+    super\__init(args)
+    @center_pos = args.center_pos
+    @r_vector = args.r_vector
+    @anglespeed = args.anglespeed or 1
+    @r_spawn = args.r_spawn
+    @ac = args.ac or 2
+
+  update: (dt) =>
+    print "radius ", (@r_spawn / @r_vector\toPolar!["y"])
+    @r_vector = @r_vector\rotated((@r_spawn / @r_vector\toPolar!["y"]) * @anglespeed * dt)
+    @angle = @r_vector\toPolar!["x"]
+    @r_vector += @r_vector\normalized! * @speed * dt
+    @speed += @ac
+    @pos = @center_pos + @r_vector
+    @hitbox\moveTo @pos.x, @pos.y
+    scene_corner = vector(0, config.scene_height)
+    dr = scene_corner - @center_pos
+    if dr\toPolar!["y"] < @r_vector\toPolar!["y"]
+      @remove!
 {
+  :CircleBullet,
   :Bullet,
   :BulletManager
 }
