@@ -1,4 +1,5 @@
 SceneManager = require "lib.SceneManager"
+signal = require "hump.signal"
 vector = require "hump.vector"
 lovelog = require "lib.lovelog"
 config = require "config"
@@ -7,6 +8,15 @@ import Mode from require "lib.Modes"
 class Stage1
   -- canvas = love.graphics.newCanvas love.graphics.getWidth! - 200, love.graphics.getHeight!
   enemy = nil
+  death = Mode{
+    id: "walk"
+    init_func: () =>
+      signal.emit("Stage1_end")
+
+    update_func: (dt, tt) =>
+      signal.emit("Stage1_end")
+
+  }
   walk = Mode{
     id: "walk"
     init_func: () =>

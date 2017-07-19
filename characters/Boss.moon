@@ -29,68 +29,7 @@ class Enemy extends Basechar
     @speed = 100
     @rage_speed = 300
     @modes = args.modes
-    @modes2 = {
-      "initiate": (dt) =>
-        @mode_dt = 0
-        @mode = "walk"
-      "walk": (dt) =>
-        vec = vector 0
-        if math.random! > 0.99
-          @direction = (@direction == "right") and "left" or "right"
-          @text = @texts[@direction]
-        if math.random! > 0.96
-          @shoot!
-        if @direction == "left" then
-          vec.x = -1
-        else
-          vec.x = 1
-        @pos = @pos + dt * @speed * vec\normalized!
-        if @pos.x < 0
-          @pos.x = 0
-          @direction = "right"
-        elseif @pos.x > config.scene_width
-          @pos.x = config.scene_width
-          @direction = "left"
-        @mode_dt += dt
-        if @mode_dt > 5
-          @mode_dt = 0
-          @mode = "rage"
-          @circle_bullets_dt = 0
-          @circle_bullets_da = 0
-          -- TODO: fix "goto_center"
-          @next_mode = "rage"
-          @mode = "goto_center"
-      "goto_center": (dt) =>
-        cx = config.scene_width/2
-        -- print "pos.x", pos.x, "cx", cx, "next mode", @next_mode
-        @direction = (@pos.x > cx) and "left" or "right"
-        vec = vector 0
-        if @direction == "left" then
-          vec.x = -1
-        else
-          vec.x = 1
-        @pos = @pos + dt * @rage_speed * vec\normalized!
-        if (@pos.x < (cx + 1)) and (@pos.x > (cx - 1))
-          @pos.x = cx
-          @mode = @next_mode
 
-      "rage": (dt) =>
-        @circle_bullets_dt += dt
-        @circleBulletsTimer!
-        @mode_dt += dt
-        if @mode_dt > 5
-          @circle_bullets_dt = 0
-          @circle_bullets_da = 0
-          @mode_dt = 0
-          @mode = "walk"
-          -- TODO: fix "goto_center"
-          @next_mode = "walk"
-          @mode = "goto_center"
-
-      "death": (dt) =>
-        signal.emit("Stage1_end")
-
-    }
 
   circleBulletsTimer: =>
     if @circle_bullets_dt >= 0.15

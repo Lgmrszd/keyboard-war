@@ -1,4 +1,5 @@
 local SceneManager = require("lib.SceneManager")
+local signal = require("hump.signal")
 local vector = require("hump.vector")
 local lovelog = require("lib.lovelog")
 local config = require("config")
@@ -7,7 +8,7 @@ Mode = require("lib.Modes").Mode
 local Stage1
 do
   local _class_0
-  local enemy, walk, rage, boss_modes
+  local enemy, death, walk, rage, boss_modes
   local _base_0 = {
     enter = function(self)
       love.graphics.setFont(config.fonts.art)
@@ -42,6 +43,15 @@ do
   _base_0.__class = _class_0
   local self = _class_0
   enemy = nil
+  death = Mode({
+    id = "walk",
+    init_func = function(self)
+      return signal.emit("Stage1_end")
+    end,
+    update_func = function(self, dt, tt)
+      return signal.emit("Stage1_end")
+    end
+  })
   walk = Mode({
     id = "walk",
     init_func = function(self) end,
