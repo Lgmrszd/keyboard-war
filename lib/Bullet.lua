@@ -94,9 +94,7 @@ do
   local _parent_0 = Bullet
   local _base_0 = {
     update = function(self, dt)
-      print("radius ", (self.r_spawn / self.r_vector:toPolar()["y"]))
       self.r_vector = self.r_vector:rotated((self.r_spawn / self.r_vector:toPolar()["y"]) * self.anglespeed * dt)
-      self.angle = self.r_vector:toPolar()["x"]
       self.r_vector = self.r_vector + (self.r_vector:normalized() * self.speed * dt)
       self.speed = self.speed + self.ac
       self.pos = self.center_pos + self.r_vector
@@ -114,10 +112,11 @@ do
     __init = function(self, args)
       _class_0.__parent.__init(self, args)
       self.center_pos = args.center_pos
-      self.r_vector = args.r_vector
+      self.r_vector = args.center_pos - args.pos
       self.anglespeed = args.anglespeed or 1
       self.r_spawn = args.r_spawn
       self.ac = args.ac or 2
+      self.pos = self.center_pos + self.r_vector
     end,
     __base = _base_0,
     __name = "CircleBullet",

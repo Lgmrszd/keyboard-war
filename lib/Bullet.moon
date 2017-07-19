@@ -66,15 +66,15 @@ class CircleBullet extends Bullet
   new: (args) =>
     super\__init(args)
     @center_pos = args.center_pos
-    @r_vector = args.r_vector
+    @r_vector = args.center_pos - args.pos
     @anglespeed = args.anglespeed or 1
     @r_spawn = args.r_spawn
     @ac = args.ac or 2
+    @pos = @center_pos + @r_vector
 
   update: (dt) =>
-    print "radius ", (@r_spawn / @r_vector\toPolar!["y"])
+    -- print "radius ", (@r_spawn / @r_vector\toPolar!["y"])
     @r_vector = @r_vector\rotated((@r_spawn / @r_vector\toPolar!["y"]) * @anglespeed * dt)
-    @angle = @r_vector\toPolar!["x"]
     @r_vector += @r_vector\normalized! * @speed * dt
     @speed += @ac
     @pos = @center_pos + @r_vector
