@@ -2,8 +2,11 @@ local vector = require("hump.vector")
 local signal = require("hump.signal")
 local lovelog = require("lib.lovelog")
 local config = require("config")
-local Bullet
-Bullet = require("lib.Bullet").Bullet
+local Bullet, CircleBullet
+do
+  local _obj_0 = require("lib.Bullet")
+  Bullet, CircleBullet = _obj_0.Bullet, _obj_0.CircleBullet
+end
 local graphics, keyboard
 do
   local _obj_0 = love
@@ -19,9 +22,10 @@ do
   local _base_0 = {
     circleBulletsTimer = function(self)
       print(self.circle_bullets_dt)
-      if self.circle_bullets_dt >= 0.5 then
+      if self.circle_bullets_dt >= 0.15 then
         self.circle_bullets_dt = 0
-        return self:spawnCircleBullets()
+        self:spawnCircleBullets(20, self.circle_bullets_da)
+        self.circle_bullets_da = self.circle_bullets_da + 1
       end
     end,
     update = function(self, dt)
@@ -78,32 +82,20 @@ do
       end
     end,
     bullet2 = function(self, cx, cy, r, a)
-      local bullet = Bullet({
+      return CircleBullet({
+        center_pos = Vector(cx, cy),
+        r_spawn = r,
         pos = Vector(cx, cy) + vector.fromPolar(a, r),
-        speed = 40,
+        speed = 80,
+        r_vector = vector.fromPolar(a, r),
         char = "*",
         type = "evil"
       })
-      bullet.r_vector = vector.fromPolar(a, r)
-      bullet.center_pos = Vector(cx, cy)
-      bullet.angle = a
-      bullet.anglespeed = 1
-      bullet.update = function(self, dt)
-        print(self.r_vector)
-        self.r_vector = self.r_vector:rotated(self.anglespeed * dt)
-        self.angle = self.r_vector:toPolar()['x']
-        self.r_vector = self.r_vector + (self.r_vector:normalized() * self.speed * dt)
-        self.pos = self.center_pos + self.r_vector
-        self.hitbox:moveTo(self.pos.x, self.pos.y)
-        if self.pos.y > love.graphics.getHeight() then
-          return self:remove()
-        end
-      end
     end,
-    spawnCircleBullets = function(self)
-      for i = 0, 19 do
-        local a = i * 20 * (math.pi * 2) / 360
-        self:bullet2(config.scene_width / 2, self.pos.y, 50, a)
+    spawnCircleBullets = function(self, n, da)
+      for i = 0, n - 1 do
+        local a = i * (math.pi * 2) / n
+        self:bullet2(config.scene_width / 2, self.pos.y, 50, a + da)
       end
     end,
     shoot = function(self)
@@ -132,6 +124,7 @@ do
       self.width = 100
       self.speed = 100
       self.circle_bullets_dt = 0
+      self.circle_bullets_da = 0
     end,
     __base = _base_0,
     __name = "Enemy",
