@@ -36,7 +36,7 @@ do
             self.hp = self.hp - 1
             signal.emit("boss_hp", self.max_hp, self.hp)
             if self.hp == 0 then
-              signal.emit("Stage1_end")
+              self.mode = "death"
             end
           end
         end
@@ -129,6 +129,9 @@ do
             self.pos.x = config.scene_width
             self.direction = 'left'
           end
+        end,
+        ["death"] = function(self, dt)
+          return signal.emit("Stage1_end")
         end
       }
     end,

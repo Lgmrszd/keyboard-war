@@ -48,6 +48,10 @@ class Enemy extends Basechar
         elseif @pos.x > config.scene_width
           @pos.x = config.scene_width
           @direction = 'left'
+
+      "death": (dt) =>
+        signal.emit("Stage1_end")
+
     }
 
   circleBulletsTimer: =>
@@ -65,7 +69,7 @@ class Enemy extends Basechar
           @hp -= 1
           signal.emit("boss_hp", @max_hp, @hp)
           if @hp == 0
-            signal.emit("Stage1_end")
+            @mode = "death"
     @hitbox\moveTo @pos.x, @pos.y
 
   bullet1: (x, y) =>
