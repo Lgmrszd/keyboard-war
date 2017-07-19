@@ -9,7 +9,7 @@ do
   local percentage, shift
   local _base_0 = {
     update_percentage = function(self, max_hp, hp)
-      percentage = hp * 100 / max_hp
+      percentage = math.max(0, hp * 100 / max_hp)
     end,
     draw = function(self)
       local total_width = config.scene_width - shift * 2

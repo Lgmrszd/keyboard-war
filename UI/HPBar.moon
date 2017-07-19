@@ -8,7 +8,7 @@ class HPBar
   shift = 100
   update_percentage: (max_hp, hp) =>
     -- print "TEST", max_hp, hp
-    percentage = hp*100/max_hp
+    percentage = math.max(0, hp*100/max_hp)
   draw: =>
     -- love.graphics.getHeight!
     total_width = config.scene_width-shift*2
