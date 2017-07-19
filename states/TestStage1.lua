@@ -71,22 +71,63 @@ local enemies = {
   }
 }
 local events = {
-  [1] = {
+  {
     time = 0,
     action = function()
       SceneManager:spawnEnemy(enemies.simple1)
       return SceneManager:spawnEnemy(enemies.simple2)
     end
   },
-  [2] = {
+  {
     time = 2,
     action = function()
       SceneManager:spawnEnemy(enemies.challenging1)
       return SceneManager:spawnEnemy(enemies.challenging2)
     end
   },
-  [3] = {
+  {
     time = 3,
+    action = function()
+      SceneManager:spawnEnemy({
+        pos = Vector(0, 30),
+        text = "(╬`益´)",
+        width = 60,
+        move = function(self, dt)
+          self.pos = self.pos + 500 * Vector(1, 0) * dt
+        end,
+        shoot = function(self)
+          if math.random() < 0.4 then
+            return Bullet({
+              pos = self.pos + Vector(0, 10),
+              speed = 400,
+              dir = Vector(0, 1),
+              char = "*"
+            })
+          end
+        end
+      })
+      return SceneManager:spawnEnemy({
+        pos = Vector(570, 30),
+        text = "(`益´╬)",
+        width = 60,
+        move = function(self, dt)
+          self.pos = self.pos + 500 * Vector(-1, 0) * dt
+        end,
+        shoot = function(self)
+          for i = 1, 3 do
+            Bullet({
+              pos = self.pos + Vector(10 * i, 20 * i),
+              speed = 400,
+              dir = Vector(0, 1),
+              char = "*"
+            })
+          end
+        end
+      })
+    end
+  },
+  {
+    time = 10,
     action = function()
       return SceneManager:spawnBoss({
         pos = Vector(0.5, 0.05)

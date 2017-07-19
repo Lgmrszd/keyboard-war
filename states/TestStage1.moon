@@ -60,22 +60,50 @@ enemies = {
       }
   }
 }
-
+--(╬`益´)
 events = {
-  [1]: {
-    time: 0
-    action: ->
+  {
+    time: 0, action: ->
       SceneManager\spawnEnemy enemies.simple1
       SceneManager\spawnEnemy enemies.simple2
   }
-  [2]: {
-    time: 2
-    action: ->
+  {
+    time: 2, action: ->
       SceneManager\spawnEnemy enemies.challenging1
       SceneManager\spawnEnemy enemies.challenging2
   }
-  [3]: {
-    time: 3
+  {
+    time: 3, action: ->
+      SceneManager\spawnEnemy {
+        pos: Vector(0, 30), text: "(╬`益´)", width: 60
+        move: (dt) =>
+          @pos = @pos + 500 * Vector(1, 0) * dt
+        shoot: =>
+          if math.random! < 0.4
+            Bullet{
+              pos: @pos + Vector(0, 10)
+              speed: 400 --math.random(50, 100)
+              dir: Vector(0, 1)
+              char: "*"
+            }
+      }
+      SceneManager\spawnEnemy {
+        pos: Vector(570, 30), text: "(`益´╬)", width: 60
+        move: (dt) =>
+          @pos = @pos + 500 * Vector(-1, 0) * dt
+        shoot: =>
+          for i = 1, 3 do
+            Bullet{
+              pos: @pos + Vector(10 * i, 20 * i)
+              speed: 400 --math.random(50, 100)
+              dir: Vector(0, 1)
+              char: "*"
+            }
+      }
+
+  }
+  {
+    time: 10
     action: ->
       SceneManager\spawnBoss {
         pos: Vector(0.5, 0.05)
