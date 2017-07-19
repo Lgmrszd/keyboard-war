@@ -4,6 +4,7 @@ return {
   panel_width = 200,
   fonts = {
     art = love.graphics.newFont("fonts/NotoSansCJK-Regular.ttc", 10),
+    art_big = love.graphics.newFont("fonts/NotoSansCJK-Regular.ttc", 20),
     menu = love.graphics.newFont(15)
   },
   binds = {

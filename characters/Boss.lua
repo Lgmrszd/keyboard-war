@@ -30,6 +30,7 @@ do
     end,
     update = function(self, dt)
       self.modes[self.mode](self, dt)
+      print(self.mode)
       self.hitbox:moveTo(self.pos.x, self.pos.y)
       if next(HC:collisions(self.hitbox)) then
         for k, v in pairs(HC:collisions(self.hitbox)) do
@@ -135,11 +136,13 @@ do
             self.mode = "rage"
             self.circle_bullets_dt = 0
             self.circle_bullets_da = 0
+            self.next_mode = "rage"
+            self.mode = "goto_center"
           end
         end,
         ["goto_center"] = function(self, dt)
           local cx = config.scene_width / 2
-          print("pos.x", pos.x, "cx", cx)
+          print("pos.x", pos.x, "cx", cx, "next mode", self.next_mode)
           self.direction = (pos.x > cx) and "left" or "right"
           local vec = vector(0)
           if self.direction == "left" then
@@ -162,6 +165,8 @@ do
             self.circle_bullets_da = 0
             self.mode_dt = 0
             self.mode = "walk"
+            self.next_mode = "walk"
+            self.mode = "goto_center"
           end
         end,
         ["death"] = function(self, dt)

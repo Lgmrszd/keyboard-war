@@ -22,7 +22,6 @@ class Enemy extends Basechar
     @direction = "right"
     @mode = "initiate"
     @text = [[(凸ಠ益ಠ)凸]]
-    -- @circle_bullets_dt += dt
     @width = 100
     @speed = 100
     @rage_speed = 300
@@ -32,7 +31,6 @@ class Enemy extends Basechar
         @mode_dt = 0
         @mode = "walk"
       "walk": (dt) =>
-        -- @circleBulletsTimer!
         vec = vector 0
         if math.random! > 0.99
           @direction = (@direction == "right") and "left" or "right"
@@ -57,12 +55,11 @@ class Enemy extends Basechar
           @circle_bullets_dt = 0
           @circle_bullets_da = 0
           -- TODO: fix "goto_center"
-          -- @next_mode = "rage"
-          -- @mode = "goto_center"
+          @next_mode = "rage"
+          @mode = "goto_center"
       "goto_center": (dt) =>
-        -- @mode = @next_mode
         cx = config.scene_width/2
-        print "pos.x", pos.x, "cx", cx
+        print "pos.x", pos.x, "cx", cx, "next mode", @next_mode
         @direction = (pos.x > cx) and "left" or "right"
         vec = vector 0
         if @direction == "left" then
@@ -84,8 +81,8 @@ class Enemy extends Basechar
           @mode_dt = 0
           @mode = "walk"
           -- TODO: fix "goto_center"
-          -- @next_mode = "walk"
-          -- @mode = "goto_center"
+          @next_mode = "walk"
+          @mode = "goto_center"
 
       "death": (dt) =>
         signal.emit("Stage1_end")
@@ -101,6 +98,7 @@ class Enemy extends Basechar
 
   update: (dt) =>
     @modes[@mode](@,dt)
+    print @mode
     @hitbox\moveTo @pos.x, @pos.y
     if next(HC\collisions(@hitbox))
       for k, v in pairs HC\collisions(@hitbox)

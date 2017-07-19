@@ -23,14 +23,14 @@ do
   local _base_0 = {
     menu = menu,
     enter = function(self)
-      love.graphics.setFont(config.fonts.art)
       self.active_node = 1
     end,
     draw = function(self)
-      love.graphics.printf("Game over", 30, 50, 200)
+      love.graphics.setFont(config.fonts.art_big)
+      love.graphics.printf("Game over ლ(ಠ_ಠ ლ)", 30, 50, 300)
+      love.graphics.setFont(config.fonts.menu)
       local x, y = 30, 100
       for i = 1, #self.menu do
-        love.graphics.setNewFont(20)
         colorize((i == self.active_node) and {
           100,
           255,

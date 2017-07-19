@@ -10,15 +10,15 @@ menu = {
 class GameOver
   menu: menu
   enter: =>
-    love.graphics.setFont config.fonts.art
     @active_node = 1
 
   draw: =>
-    love.graphics.printf "Game over", 30, 50, 200
+    love.graphics.setFont config.fonts.art_big
+    love.graphics.printf "Game over ლ(ಠ_ಠ ლ)", 30, 50, 300
+    love.graphics.setFont config.fonts.menu
     x, y = 30, 100
     for i = 1, #@menu
       -- love.graphics.getFont()
-      love.graphics.setNewFont 20
       -- love.graphics.printf(text, x, y, limit, align, r, sx, sy, ox, oy, kx, ky)
       colorize (i == @active_node) and {100, 255, 100} or {100, 100, 100}, ->
         love.graphics.printf @menu[i].text, x, y, 200
