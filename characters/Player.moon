@@ -72,6 +72,8 @@ class Player extends Basechar
           signal.emit("player_meets_bullet", {lives: @lives, bombs: @bombs})
           if @lives == 0 -- TODO move this somewhere else
             StateManager.switch "MainMenu"
+            SceneManager = require "lib.SceneManager"
+            SceneManager\clear!
           return
 
   shoot: =>

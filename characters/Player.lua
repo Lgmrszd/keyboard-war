@@ -90,6 +90,8 @@ do
             })
             if self.lives == 0 then
               StateManager.switch("MainMenu")
+              local SceneManager = require("lib.SceneManager")
+              SceneManager:clear()
             end
             return 
           end
