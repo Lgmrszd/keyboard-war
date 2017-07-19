@@ -8,6 +8,7 @@ import graphics from love
 Controller = require "lib.Controller"
 Basechar = require "lib.Basechar"
 HC = require "HCWorld"
+StateManager = require "lib.StateManager"
 
 class Player extends Basechar
   initial_bomb_count = 3
@@ -69,6 +70,8 @@ class Player extends Basechar
           @lives -= 1
           @bombs = initial_bomb_count
           signal.emit("player_meets_bullet", {lives: @lives, bombs: @bombs})
+          if @lives == 0 -- TODO move this somewhere else
+            StateManager.switch "MainMenu"
           return
 
   shoot: =>

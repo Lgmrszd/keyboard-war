@@ -13,6 +13,7 @@ graphics = love.graphics
 local Controller = require("lib.Controller")
 local Basechar = require("lib.Basechar")
 local HC = require("HCWorld")
+local StateManager = require("lib.StateManager")
 local Player
 do
   local _class_0
@@ -87,6 +88,9 @@ do
               lives = self.lives,
               bombs = self.bombs
             })
+            if self.lives == 0 then
+              StateManager.switch("MainMenu")
+            end
             return 
           end
         end
