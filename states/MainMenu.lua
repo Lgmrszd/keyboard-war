@@ -7,7 +7,7 @@ local menu = {
     id = "play",
     text = "Play",
     action = function()
-      return StateManager.switch("Stage1")
+      return StateManager.switch("TestStage1")
     end
   },
   {
