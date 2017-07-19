@@ -6,6 +6,7 @@ Player = require "characters.Player"
 HPBar = require "UI.HPBar"
 StatsPanel = require "UI.StatsPanel"
 StateManager = require "lib.StateManager"
+signal = require "hump.signal"
 colorize = require "lib.colorize"
 config = require "config"
 
@@ -32,6 +33,9 @@ SceneManager =
 
   spawnEnemy: =>
     enemies[SimpleEnemy Vector(300, 50)] = true
+
+  removeEnemy: (obj) =>
+    enemies[obj] = nil
 
   setPlayer: (p) =>
     player = p
@@ -69,5 +73,8 @@ SceneManager =
     state = StateManager.getState!
     state.keypressed and state\keypressed key
     player and player\keypressed key
+
+signal.register "dead", (obj) ->
+  SceneManager\removeEnemy obj
 
 return SceneManager

@@ -10,6 +10,7 @@ local Player = require("characters.Player")
 local HPBar = require("UI.HPBar")
 local StatsPanel = require("UI.StatsPanel")
 local StateManager = require("lib.StateManager")
+local signal = require("hump.signal")
 local colorize = require("lib.colorize")
 local config = require("config")
 local enemies = { }
@@ -33,6 +34,9 @@ local SceneManager = {
   end,
   spawnEnemy = function(self)
     enemies[SimpleEnemy(Vector(300, 50))] = true
+  end,
+  removeEnemy = function(self, obj)
+    enemies[obj] = nil
   end,
   setPlayer = function(self, p)
     player = p
@@ -79,4 +83,7 @@ local SceneManager = {
     return player and player:keypressed(key)
   end
 }
+signal.register("dead", function(obj)
+  return SceneManager:removeEnemy(obj)
+end)
 return SceneManager
