@@ -10,8 +10,12 @@ do
   local _parent_0 = Basechar
   local _base_0 = {
     update = function(self, dt)
-      if math.random() > 0.99 then
-        self:shoot()
+      if self.move then
+        self:move(dt)
+      end
+      self.hitbox:moveTo(self.pos.x, self.pos.y)
+      if self.shoot then
+        self:shoot(dt)
       end
       if next(HC:collisions(self.hitbox)) then
         for k, v in pairs(HC:collisions(self.hitbox)) do
@@ -20,23 +24,17 @@ do
           end
         end
       end
-    end,
-    shoot = function(self)
-      return Bullet({
-        pos = self.pos - Vector(0, 20),
-        speed = math.random(1, 100),
-        dir = Vector(math.random() * 2 - 1, math.random()):normalized(),
-        char = "*"
-      })
     end
   }
   _base_0.__index = _base_0
   setmetatable(_base_0, _parent_0.__base)
   _class_0 = setmetatable({
-    __init = function(self, pos)
-      self.pos = pos or self.pos
-      self.height = 15
-      self.width = 30
+    __init = function(self, arg)
+      for k, v in pairs(arg) do
+        self[k] = v
+      end
+      self.height = self.height or 15
+      self.width = self.width or 30
       local hw, hh = self.width / 2, self.height / 2
       self.hitbox = HC:polygon(self.pos.x - hw, self.pos.y - hh, self.pos.x + hw, self.pos.y - hh, self.pos.x + hw, self.pos.y + hh, self.pos.x - hw, self.pos.y + hh)
     end,

@@ -1,19 +1,117 @@
 local SceneManager = require("lib.SceneManager")
 local Vector = require("hump.vector")
+local Bullet
+Bullet = require("lib.Bullet").Bullet
 local lovelog = require("lib.lovelog")
 local config = require("config")
+local enemies = {
+  simple1 = {
+    pos = Vector(5, 10),
+    move = function(self, dt)
+      self.pos = self.pos + 200 * Vector(1, 1) * dt
+    end,
+    shoot = function(self)
+      if math.random() > 0.9 then
+        return Bullet({
+          pos = self.pos + Vector(0, 10),
+          speed = math.random(50, 100),
+          dir = Vector(0.2 * (math.random() - 0.5), math.random()):normalized(),
+          char = "*"
+        })
+      end
+    end
+  },
+  simple2 = {
+    pos = Vector(595, 10),
+    move = function(self, dt)
+      self.pos = self.pos + 200 * Vector(-1, 1) * dt
+    end,
+    shoot = function(self)
+      if math.random() > 0.9 then
+        return Bullet({
+          pos = self.pos + Vector(0, 10),
+          speed = math.random(50, 100),
+          dir = Vector(0.2 * (math.random() - 0.5), math.random()):normalized(),
+          char = "*"
+        })
+      end
+    end
+  },
+  challenging1 = {
+    pos = Vector(5, 10),
+    text = "(・`ω´・)",
+    width = 60,
+    move = function(self, dt)
+      self.pos = self.pos + 200 * Vector(1, 1) * dt
+    end,
+    shoot = function(self)
+      return Bullet({
+        pos = self.pos + Vector(0, 10),
+        speed = math.random(50, 100),
+        dir = Vector(0.2 * (math.random() - 0.5), math.random()):normalized(),
+        char = "*"
+      })
+    end
+  },
+  challenging2 = {
+    pos = Vector(595, 10),
+    text = "(・`ω´・)",
+    width = 60,
+    move = function(self, dt)
+      self.pos = self.pos + 200 * Vector(-1, 1) * dt
+    end,
+    shoot = function(self)
+      return Bullet({
+        pos = self.pos + Vector(0, 10),
+        speed = math.random(50, 100),
+        dir = Vector(0.2 * (math.random() - 0.5), math.random()):normalized(),
+        char = "*"
+      })
+    end
+  }
+}
+local events = {
+  [1] = {
+    time = 0,
+    action = function()
+      SceneManager:spawnEnemy(enemies.simple1)
+      return SceneManager:spawnEnemy(enemies.simple2)
+    end
+  },
+  [2] = {
+    time = 2,
+    action = function()
+      SceneManager:spawnEnemy(enemies.challenging1)
+      return SceneManager:spawnEnemy(enemies.challenging2)
+    end
+  },
+  [3] = {
+    time = 3,
+    action = function()
+      return SceneManager:spawnBoss(Vector(0.5, 0.05))
+    end
+  }
+}
 local Stage1
 do
   local _class_0
   local enemy
   local _base_0 = {
+    events = events,
     enter = function(self)
+      self.time = 0
+      self.current_event = 1
       love.graphics.setFont(config.fonts.art)
-      SceneManager:spawnPlayer(Vector(0.5, 0.9))
-      return SceneManager:spawnEnemy(Vector(0.5, 0.5))
+      return SceneManager:spawnPlayer(Vector(0.5, 0.9))
     end,
     update = function(self, dt)
-      return SceneManager:update(dt)
+      SceneManager:update(dt)
+      self.time = self.time + dt
+      local event = self.events[self.current_event]
+      if event and self.time >= event.time then
+        self.current_event = self.current_event + 1
+        return event.action()
+      end
     end,
     draw = function(self)
       lovelog.reset()
