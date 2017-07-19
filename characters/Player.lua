@@ -3,8 +3,11 @@ local signal = require("hump.signal")
 local lovelog = require("lib.lovelog")
 local colorize = require("lib.colorize")
 local config = require("config")
-local Bullet
-Bullet = require("lib.Bullet").Bullet
+local Bullet, BulletManager
+do
+  local _obj_0 = require("lib.Bullet")
+  Bullet, BulletManager = _obj_0.Bullet, _obj_0.BulletManager
+end
 local graphics
 graphics = love.graphics
 local Controller = require("lib.Controller")
@@ -102,10 +105,21 @@ do
         type = "good"
       })
     end,
+    explodeBomb = function(self)
+      return BulletManager:removeAllBullets()
+    end,
     keyreleased = function(self, key)
       keys_locked = false
     end,
-    keypressed = function(self, key) end
+    keypressed = function(self, key)
+      if Controller.getActionByKey(key) == "bomb" then
+        if self.bombs > 0 then
+          self:explodeBomb()
+          self.bombs = self.bombs - 1
+          return signal.emit("bomb_count_changed", self.bombs)
+        end
+      end
+    end
   }
   _base_0.__index = _base_0
   setmetatable(_base_0, _parent_0.__base)

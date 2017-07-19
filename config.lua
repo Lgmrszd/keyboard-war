@@ -8,6 +8,7 @@ return {
   },
   binds = {
     shoot = "z",
+    bomb = "x",
     slowdown = {
       "lshift",
       "lctrl"

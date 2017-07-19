@@ -1,46 +1,29 @@
 local colorize = require("lib.colorize")
 local config = require("config")
+local signal = require("hump.signal")
 local graphics
 graphics = love.graphics
-local StatsPanel
-do
-  local _class_0
-  local canvas
-  local _base_0 = {
-    lives = 3,
-    bombs = 3,
-    draw = function(self)
-      love.graphics.setCanvas(canvas)
-      colorize({
-        20,
-        0,
-        20
-      }, function()
-        return graphics.rectangle("fill", 0, 0, canvas:getWidth(), canvas:getHeight())
-      end)
-      graphics.printf("Lives: " .. self.lives, 10, 10, 100)
-      graphics.printf("Bombs: " .. self.bombs, 10, 30, 100)
-      graphics.setCanvas()
-      return graphics.draw(canvas, config.scene_width, 0)
-    end,
-    update = function(self, dt) end
-  }
-  _base_0.__index = _base_0
-  _class_0 = setmetatable({
-    __init = function() end,
-    __base = _base_0,
-    __name = "StatsPanel"
-  }, {
-    __index = _base_0,
-    __call = function(cls, ...)
-      local _self_0 = setmetatable({}, _base_0)
-      cls.__init(_self_0, ...)
-      return _self_0
-    end
-  })
-  _base_0.__class = _class_0
-  local self = _class_0
-  canvas = love.graphics.newCanvas(config.panel_width, config.scene_height)
-  StatsPanel = _class_0
-  return _class_0
-end
+local StatsPanel = {
+  canvas = love.graphics.newCanvas(config.panel_width, config.scene_height),
+  lives = 3,
+  bombs = 3,
+  draw = function(self)
+    love.graphics.setCanvas(self.canvas)
+    colorize({
+      20,
+      0,
+      20
+    }, function()
+      return graphics.rectangle("fill", 0, 0, self.canvas:getWidth(), self.canvas:getHeight())
+    end)
+    graphics.printf("Lives: " .. self.lives, 10, 10, 100)
+    graphics.printf("Bombs: " .. self.bombs, 10, 30, 100)
+    graphics.setCanvas()
+    return graphics.draw(self.canvas, config.scene_width, 0)
+  end,
+  update = function(self, dt) end
+}
+signal.register("bomb_count_changed", function(count)
+  StatsPanel.bombs = count
+end)
+return StatsPanel

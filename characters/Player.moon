@@ -3,7 +3,7 @@ signal = require "hump.signal"
 lovelog = require "lib.lovelog"
 colorize = require "lib.colorize"
 config = require "config"
-import Bullet from require "lib.Bullet"
+import Bullet, BulletManager from require "lib.Bullet"
 import graphics from love
 Controller = require "lib.Controller"
 Basechar = require "lib.Basechar"
@@ -85,8 +85,15 @@ class Player extends Basechar
       type: "good"
     }
 
+  explodeBomb: =>
+    BulletManager\removeAllBullets!
+
   keyreleased: (key) =>
     keys_locked = false
 
   keypressed: (key) =>
-    -- TODO?
+    if Controller.getActionByKey(key) == "bomb" then
+      if @bombs > 0
+        @explodeBomb!
+        @bombs -= 1
+        signal.emit "bomb_count_changed", @bombs
