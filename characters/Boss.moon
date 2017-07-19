@@ -2,7 +2,7 @@ vector = require "hump.vector"
 signal = require "hump.signal"
 lovelog = require "lib.lovelog"
 config = require "config"
-import Bullet from require "lib.Bullet"
+import Bullet, CircleBullet from require "lib.Bullet"
 import graphics, keyboard from love
 Vector = require "hump.vector"
 Basechar = require "lib.Basechar"
@@ -24,12 +24,14 @@ class Enemy extends Basechar
     @width = 100
     @speed = 100
     @circle_bullets_dt = 0
+    @circle_bullets_da = 0
 
   circleBulletsTimer: =>
     print @circle_bullets_dt
-    if @circle_bullets_dt >= 0.5
+    if @circle_bullets_dt >= 0.15
       @circle_bullets_dt = 0
-      @spawnCircleBullets!
+      @spawnCircleBullets(20, @circle_bullets_da)
+      @circle_bullets_da += 1
 
   update: (dt) =>
     -- super\update dt
@@ -76,40 +78,29 @@ class Enemy extends Basechar
         @remove!
 
   bullet2: (cx, cy, r, a) =>
-    bullet = Bullet{
+    CircleBullet{
+      center_pos: Vector(cx, cy)
+      r_spawn: r
       pos: Vector(cx, cy) + vector.fromPolar(a, r)
-      speed: 40
+      speed: 80
+      r_vector: vector.fromPolar(a, r)
       -- dir: Vector(math.random! - 0.5, math.random!)\normalized!
       char: "*"
       type: "evil"
+      -- rad: 10
     }
-    bullet.r_vector = vector.fromPolar(a, r)
-    bullet.center_pos = Vector(cx, cy)
     --print bullet.pos, bullet.center_pos, cx, cy
     --print vector.fromPolar(a, r)
-    bullet.angle = a
-    bullet.anglespeed = 1
-    bullet.update = (dt) =>
-      print @r_vector
-      @r_vector = @r_vector\rotated(@anglespeed * dt)
-      @angle = @r_vector\toPolar()['x']
-      @r_vector += @r_vector\normalized! * @speed * dt
-      @pos = @center_pos + @r_vector
-
-      @hitbox\moveTo @pos.x, @pos.y
-      if @pos.y > love.graphics.getHeight!
-        @remove!
 
 
 
-  spawnCircleBullets: =>
-    for i = 0, 19
-      a = i*20*(math.pi*2)/360
-      @bullet2 config.scene_width/2, @pos.y, 50, a
+  spawnCircleBullets: (n, da) =>
+    for i = 0, n-1
+      a = i*(math.pi*2)/n
+      @bullet2 config.scene_width/2, @pos.y, 50, a + da
 
   shoot: =>
     @bullet1 @pos.x, @pos.y + 20
-    -- @bullet2 config.scene_width/2, @pos.y, 50, math.pi/2
 
   draw: =>
     super\draw!
