@@ -5,12 +5,16 @@ local config = require("config")
 local Stage1
 do
   local _class_0
-  local enemy
+  local enemy, boss_modes
   local _base_0 = {
     enter = function(self)
       love.graphics.setFont(config.fonts.art)
       SceneManager:spawnPlayer(Vector(0.5, 0.9))
-      return SceneManager:spawnBoss(Vector(0.5, 0.05))
+      SceneManager:spawnBoss({
+        pos = Vector(0.5, 0.05),
+        modes = boss_modes
+      })
+      return print("player", SceneManager.player)
     end,
     update = function(self, dt)
       return SceneManager:update(dt)
@@ -37,6 +41,7 @@ do
   _base_0.__class = _class_0
   local self = _class_0
   enemy = nil
+  boss_modes = { }
   Stage1 = _class_0
   return _class_0
 end

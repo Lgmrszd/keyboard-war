@@ -6,11 +6,15 @@ config = require "config"
 class Stage1
   -- canvas = love.graphics.newCanvas love.graphics.getWidth! - 200, love.graphics.getHeight!
   enemy = nil
-
+  boss_modes = {}
   enter: =>
     love.graphics.setFont config.fonts.art
     SceneManager\spawnPlayer Vector(0.5, 0.9)
-    SceneManager\spawnBoss Vector(0.5, 0.05)
+    SceneManager\spawnBoss {
+      pos: Vector(0.5, 0.05)
+      modes: boss_modes
+    }
+    print "player", SceneManager.player
 
   update: (dt) =>
     SceneManager\update dt

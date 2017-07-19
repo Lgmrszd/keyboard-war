@@ -3,16 +3,18 @@ signal = require "hump.signal"
 lovelog = require "lib.lovelog"
 config = require "config"
 import Bullet, CircleBullet from require "lib.Bullet"
+import Mode from require "lib.Modes"
 import graphics, keyboard from love
 Vector = require "hump.vector"
 Basechar = require "lib.Basechar"
 HC = require "HCWorld"
 
+
 class Enemy extends Basechar
-  new: (pos) =>
+  new: (args) =>
+    @pos = args.pos
     @hitbox_radius = 10
-    @hitbox = HC\circle @pos.x, @pos.y, @hitbox_radius
-    @pos = pos or @pos
+    @hitbox = HC\circle args.pos.x, args.pos.y, @hitbox_radius
     @max_hp = 100
     @hp = @max_hp
     @texts = {
@@ -26,6 +28,9 @@ class Enemy extends Basechar
     @speed = 100
     @rage_speed = 300
     @mode_dt = 0
+    @modes2 = {
+
+    }
     @modes = {
       "initiate": (dt) =>
         @mode_dt = 0
@@ -59,7 +64,7 @@ class Enemy extends Basechar
           @mode = "goto_center"
       "goto_center": (dt) =>
         cx = config.scene_width/2
-        print "pos.x", pos.x, "cx", cx, "next mode", @next_mode
+        -- print "pos.x", pos.x, "cx", cx, "next mode", @next_mode
         @direction = (pos.x > cx) and "left" or "right"
         vec = vector 0
         if @direction == "left" then
@@ -98,7 +103,6 @@ class Enemy extends Basechar
 
   update: (dt) =>
     @modes[@mode](@,dt)
-    print @mode
     @hitbox\moveTo @pos.x, @pos.y
     if next(HC\collisions(@hitbox))
       for k, v in pairs HC\collisions(@hitbox)

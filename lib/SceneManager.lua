@@ -25,10 +25,13 @@ local SceneManager = {
     player = Player()
     return player:setPos(pos_x, pos_y)
   end,
-  spawnBoss = function(self, pos)
-    local pos_x = pos.x * config.scene_width
-    local pos_y = pos.y * config.scene_height
-    local boss = Boss(Vector(pos_x, pos_y))
+  spawnBoss = function(self, args)
+    local pos_x = args.pos.x * config.scene_width
+    local pos_y = args.pos.y * config.scene_height
+    local boss = Boss({
+      pos = Vector(pos_x, pos_y),
+      modes = args.modes
+    })
     enemies[boss] = true
   end,
   spawnEnemy = function(self)

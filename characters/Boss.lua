@@ -7,6 +7,8 @@ do
   local _obj_0 = require("lib.Bullet")
   Bullet, CircleBullet = _obj_0.Bullet, _obj_0.CircleBullet
 end
+local Mode
+Mode = require("lib.Modes").Mode
 local graphics, keyboard
 do
   local _obj_0 = love
@@ -30,7 +32,6 @@ do
     end,
     update = function(self, dt)
       self.modes[self.mode](self, dt)
-      print(self.mode)
       self.hitbox:moveTo(self.pos.x, self.pos.y)
       if next(HC:collisions(self.hitbox)) then
         for k, v in pairs(HC:collisions(self.hitbox)) do
@@ -86,10 +87,10 @@ do
   _base_0.__index = _base_0
   setmetatable(_base_0, _parent_0.__base)
   _class_0 = setmetatable({
-    __init = function(self, pos)
+    __init = function(self, args)
+      self.pos = args.pos
       self.hitbox_radius = 10
-      self.hitbox = HC:circle(self.pos.x, self.pos.y, self.hitbox_radius)
-      self.pos = pos or self.pos
+      self.hitbox = HC:circle(args.pos.x, args.pos.y, self.hitbox_radius)
       self.max_hp = 100
       self.hp = self.max_hp
       self.texts = {
@@ -103,6 +104,7 @@ do
       self.speed = 100
       self.rage_speed = 300
       self.mode_dt = 0
+      self.modes2 = { }
       self.modes = {
         ["initiate"] = function(self, dt)
           self.mode_dt = 0
@@ -142,7 +144,6 @@ do
         end,
         ["goto_center"] = function(self, dt)
           local cx = config.scene_width / 2
-          print("pos.x", pos.x, "cx", cx, "next mode", self.next_mode)
           self.direction = (pos.x > cx) and "left" or "right"
           local vec = vector(0)
           if self.direction == "left" then

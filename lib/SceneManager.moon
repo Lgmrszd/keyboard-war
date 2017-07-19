@@ -24,10 +24,13 @@ SceneManager =
     player = Player!
     player\setPos pos_x, pos_y
 
-  spawnBoss: (pos) =>
-    pos_x = pos.x * config.scene_width
-    pos_y = pos.y * config.scene_height
-    boss = Boss Vector(pos_x, pos_y)
+  spawnBoss: (args) =>
+    pos_x = args.pos.x * config.scene_width
+    pos_y = args.pos.y * config.scene_height
+    boss = Boss{
+      pos: Vector(pos_x, pos_y)
+      modes: args.modes
+    }
     enemies[boss] = true
 
   spawnEnemy: =>
