@@ -50,14 +50,13 @@ do
       end
     end,
     draw = function(self)
-      colorize({
+      return colorize({
         20,
         20,
         200
       }, function()
         return graphics.circle("fill", self.pos.x, self.pos.y, self.rad)
       end)
-      return graphics.printf(self.char, self.pos.x - self.rad, self.pos.y - self.rad, 2 * self.rad, "center")
     end,
     remove = function(self)
       HC:remove(self.hitbox)

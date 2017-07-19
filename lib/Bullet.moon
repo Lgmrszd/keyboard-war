@@ -55,7 +55,7 @@ class Bullet
 
   draw: =>
     colorize {20, 20, 200}, -> graphics.circle "fill", @pos.x, @pos.y, @rad
-    graphics.printf @char, @pos.x - @rad, @pos.y - @rad, 2 * @rad, "center"
+    -- graphics.printf s@char, @pos.x - @rad, @pos.y - @rad, 2 * @rad, "center"
 
   remove: =>
     HC\remove @hitbox
