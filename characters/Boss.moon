@@ -22,16 +22,14 @@ class Enemy extends Basechar
       left: "凸(ಠ益ಠ凸)"
     }
     @direction = "right"
-    @mode = "initiate"
+    @mode = "walk"
+    @pmode = "nil"
     @text = [[(凸ಠ益ಠ)凸]]
     @width = 100
     @speed = 100
     @rage_speed = 300
-    @mode_dt = 0
+    @modes = args.modes
     @modes2 = {
-
-    }
-    @modes = {
       "initiate": (dt) =>
         @mode_dt = 0
         @mode = "walk"
@@ -65,7 +63,7 @@ class Enemy extends Basechar
       "goto_center": (dt) =>
         cx = config.scene_width/2
         -- print "pos.x", pos.x, "cx", cx, "next mode", @next_mode
-        @direction = (pos.x > cx) and "left" or "right"
+        @direction = (@pos.x > cx) and "left" or "right"
         vec = vector 0
         if @direction == "left" then
           vec.x = -1
@@ -95,14 +93,17 @@ class Enemy extends Basechar
     }
 
   circleBulletsTimer: =>
-    print @circle_bullets_dt
     if @circle_bullets_dt >= 0.15
       @circle_bullets_dt = 0
       @spawnCircleBullets(20, @circle_bullets_da)
       @circle_bullets_da += 1
 
   update: (dt) =>
-    @modes[@mode](@,dt)
+    -- @modes[@mode](@,dt)
+    if @mode ~= @pmode
+      @modes[@mode]\init(@)
+      @pmode = @mode
+    @modes[@mode]\update(@,dt)
     @hitbox\moveTo @pos.x, @pos.y
     if next(HC\collisions(@hitbox))
       for k, v in pairs HC\collisions(@hitbox)
@@ -139,8 +140,6 @@ class Enemy extends Basechar
         r_spawn: r
         pos: Vector(cx, cy) + vector.fromPolar(a, r)
         speed: 80
-        --r_vector: vector.fromPolar(a, r)
-        -- dir: Vector(math.random! - 0.5, math.random!)\normalized!
         char: "*"
         type: "evil"
       }

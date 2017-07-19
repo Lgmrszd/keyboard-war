@@ -23,7 +23,6 @@ do
   local _parent_0 = Basechar
   local _base_0 = {
     circleBulletsTimer = function(self)
-      print(self.circle_bullets_dt)
       if self.circle_bullets_dt >= 0.15 then
         self.circle_bullets_dt = 0
         self:spawnCircleBullets(20, self.circle_bullets_da)
@@ -31,7 +30,11 @@ do
       end
     end,
     update = function(self, dt)
-      self.modes[self.mode](self, dt)
+      if self.mode ~= self.pmode then
+        self.modes[self.mode]:init(self)
+        self.pmode = self.mode
+      end
+      self.modes[self.mode]:update(self, dt)
       self.hitbox:moveTo(self.pos.x, self.pos.y)
       if next(HC:collisions(self.hitbox)) then
         for k, v in pairs(HC:collisions(self.hitbox)) do
@@ -98,14 +101,14 @@ do
         left = "凸(ಠ益ಠ凸)"
       }
       self.direction = "right"
-      self.mode = "initiate"
+      self.mode = "walk"
+      self.pmode = "nil"
       self.text = [[(凸ಠ益ಠ)凸]]
       self.width = 100
       self.speed = 100
       self.rage_speed = 300
-      self.mode_dt = 0
-      self.modes2 = { }
-      self.modes = {
+      self.modes = args.modes
+      self.modes2 = {
         ["initiate"] = function(self, dt)
           self.mode_dt = 0
           self.mode = "walk"
@@ -144,7 +147,7 @@ do
         end,
         ["goto_center"] = function(self, dt)
           local cx = config.scene_width / 2
-          self.direction = (pos.x > cx) and "left" or "right"
+          self.direction = (self.pos.x > cx) and "left" or "right"
           local vec = vector(0)
           if self.direction == "left" then
             vec.x = -1
