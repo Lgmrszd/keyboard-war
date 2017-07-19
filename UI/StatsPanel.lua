@@ -7,6 +7,8 @@ do
   local _class_0
   local canvas
   local _base_0 = {
+    lives = 3,
+    bombs = 3,
     draw = function(self)
       love.graphics.setCanvas(canvas)
       colorize({
@@ -16,7 +18,8 @@ do
       }, function()
         return graphics.rectangle("fill", 0, 0, canvas:getWidth(), canvas:getHeight())
       end)
-      graphics.printf("WHAT", 10, 10, 100)
+      graphics.printf("Lives: " .. self.lives, 10, 10, 100)
+      graphics.printf("Bombs: " .. self.bombs, 10, 30, 100)
       graphics.setCanvas()
       return graphics.draw(canvas, config.scene_width, 0)
     end,
