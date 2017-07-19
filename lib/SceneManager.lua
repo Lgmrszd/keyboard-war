@@ -19,12 +19,16 @@ local SceneManager = {
   addEnemy = function(self, e)
     enemies[e] = true
   end,
-  spawnPlayer = function(self)
+  spawnPlayer = function(self, pos)
+    local pos_x = pos.x * config.scene_width
+    local pos_y = pos.y * config.scene_height
     player = Player()
-    return player:setPos(love.graphics.getWidth() / 2, love.graphics.getHeight() - 20)
+    return player:setPos(pos_x, pos_y)
   end,
-  spawnBoss = function(self)
-    local boss = Boss(Vector(300, 50))
+  spawnBoss = function(self, pos)
+    local pos_x = pos.x * config.scene_width
+    local pos_y = pos.y * config.scene_height
+    local boss = Boss(Vector(pos_x, pos_y))
     enemies[boss] = true
   end,
   spawnEnemy = function(self)

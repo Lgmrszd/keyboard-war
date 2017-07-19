@@ -1,6 +1,7 @@
+local SceneManager = require("lib.SceneManager")
+local Vector = require("hump.vector")
 local lovelog = require("lib.lovelog")
 local config = require("config")
-local SceneManager = require("lib.SceneManager")
 local Stage1
 do
   local _class_0
@@ -8,8 +9,8 @@ do
   local _base_0 = {
     enter = function(self)
       love.graphics.setFont(config.fonts.art)
-      SceneManager:spawnPlayer()
-      return SceneManager:spawnBoss()
+      SceneManager:spawnPlayer(Vector(0.5, 0.9))
+      return SceneManager:spawnBoss(Vector(0.5, 0.05))
     end,
     update = function(self, dt)
       return SceneManager:update(dt)

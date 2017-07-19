@@ -18,12 +18,16 @@ SceneManager =
   addEnemy: (e) =>
     enemies[e] = true
 
-  spawnPlayer: =>
+  spawnPlayer: (pos) =>
+    pos_x = pos.x * config.scene_width
+    pos_y = pos.y * config.scene_height
     player = Player!
-    player\setPos(love.graphics.getWidth!/2, love.graphics.getHeight! - 20)
+    player\setPos pos_x, pos_y
 
-  spawnBoss: =>
-    boss = Boss Vector(300, 50)
+  spawnBoss: (pos) =>
+    pos_x = pos.x * config.scene_width
+    pos_y = pos.y * config.scene_height
+    boss = Boss Vector(pos_x, pos_y)
     enemies[boss] = true
 
   spawnEnemy: =>
