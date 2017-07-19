@@ -71,7 +71,7 @@ class Player extends Basechar
           @bombs = initial_bomb_count
           signal.emit("player_meets_bullet", {lives: @lives, bombs: @bombs})
           if @lives == 0 -- TODO move this somewhere else
-            StateManager.switch "MainMenu"
+            StateManager.switch "GameOver"
             SceneManager = require "lib.SceneManager"
             SceneManager\clear!
           return

@@ -89,7 +89,7 @@ do
               bombs = self.bombs
             })
             if self.lives == 0 then
-              StateManager.switch("MainMenu")
+              StateManager.switch("GameOver")
               local SceneManager = require("lib.SceneManager")
               SceneManager:clear()
             end
