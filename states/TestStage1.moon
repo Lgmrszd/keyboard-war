@@ -77,7 +77,9 @@ events = {
   [3]: {
     time: 3
     action: ->
-      SceneManager\spawnBoss Vector(0.5, 0.05)
+      SceneManager\spawnBoss {
+        pos: Vector(0.5, 0.05)
+      }
   }
 }
 

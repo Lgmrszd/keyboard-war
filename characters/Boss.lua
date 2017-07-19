@@ -17,6 +17,78 @@ end
 local Vector = require("hump.vector")
 local Basechar = require("lib.Basechar")
 local HC = require("HCWorld")
+local death = Mode({
+  id = "walk",
+  init_func = function(self)
+    return signal.emit("Stage1_end")
+  end,
+  update_func = function(self, dt, tt)
+    return signal.emit("Stage1_end")
+  end
+})
+local walk = Mode({
+  id = "walk",
+  init_func = function(self) end,
+  update_func = function(self, dt, tt)
+    local vec = vector(0)
+    if math.random() > 0.99 then
+      self.direction = (self.direction == "right") and "left" or "right"
+      self.text = self.texts[self.direction]
+    end
+    if math.random() > 0.96 then
+      self:shoot()
+    end
+    if self.direction == "left" then
+      vec.x = -1
+    else
+      vec.x = 1
+    end
+    self.pos = self.pos + dt * self.speed * vec:normalized()
+    if self.pos.x < 0 then
+      self.pos.x = 0
+      self.direction = "right"
+    elseif self.pos.x > config.scene_width then
+      self.pos.x = config.scene_width
+      self.direction = "left"
+    end
+    print("total time", tt)
+    if tt > 5 then
+      self.mode = "rage"
+    end
+  end
+})
+local rage = Mode({
+  id = "rage",
+  init_func = function(self)
+    self.circle_bullets_dt = 0
+    self.circle_bullets_da = 0
+    local cx = config.scene_width / 2
+    self.rage_speed = (cx - self.pos.x) / 0.5
+  end,
+  update_func = function(self, dt, tt)
+    self.circle_bullets_dt = self.circle_bullets_dt + dt
+    if tt < 0.5 then
+      local cx = config.scene_width / 2
+      self.direction = (self.pos.x > cx) and "left" or "right"
+      local vec = vector(0)
+      vec.x = 1
+      self.pos = self.pos + dt * self.rage_speed * vec:normalized()
+    else
+      if self.circle_bullets_dt >= 0.15 then
+        self.circle_bullets_dt = 0
+        self:spawnCircleBullets(20, self.circle_bullets_da)
+        self.circle_bullets_da = self.circle_bullets_da + 1
+      end
+    end
+    if tt > 5 then
+      self.mode = "walk"
+    end
+  end
+})
+local boss_modes = {
+  ["walk"] = walk,
+  ["rage"] = rage
+}
 local Enemy
 do
   local _class_0
@@ -107,7 +179,7 @@ do
       self.width = 100
       self.speed = 100
       self.rage_speed = 300
-      self.modes = args.modes
+      self.modes = boss_modes
     end,
     __base = _base_0,
     __name = "Enemy",
