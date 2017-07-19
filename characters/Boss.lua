@@ -30,6 +30,7 @@ do
     end,
     update = function(self, dt)
       self.modes[self.mode](self, dt)
+      self.hitbox:moveTo(self.pos.x, self.pos.y)
       if next(HC:collisions(self.hitbox)) then
         for k, v in pairs(HC:collisions(self.hitbox)) do
           if k.type == "good" then
@@ -41,7 +42,6 @@ do
           end
         end
       end
-      return self.hitbox:moveTo(self.pos.x, self.pos.y)
     end,
     bullet1 = function(self, x, y)
       local bullet = Bullet({

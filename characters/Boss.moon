@@ -101,6 +101,7 @@ class Enemy extends Basechar
 
   update: (dt) =>
     @modes[@mode](@,dt)
+    @hitbox\moveTo @pos.x, @pos.y
     if next(HC\collisions(@hitbox))
       for k, v in pairs HC\collisions(@hitbox)
         if k.type == "good"
@@ -108,7 +109,6 @@ class Enemy extends Basechar
           signal.emit("boss_hp", @max_hp, @hp)
           if @hp == 0
             @mode = "death"
-    @hitbox\moveTo @pos.x, @pos.y
 
   bullet1: (x, y) =>
     bullet = Bullet{
