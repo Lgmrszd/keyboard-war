@@ -15,7 +15,7 @@ class Player extends Basechar
   width: 70
   speed: 300
   slowspeed: 100
-  health: 3 -- lives
+  lives: 3 -- lives
   bombs: 3
 
   draw: =>
@@ -23,7 +23,7 @@ class Player extends Basechar
     if @draw_hitbox
       colorize {255, 0, 0}, -> love.graphics.circle "fill", @pos.x, @pos.y, @hitbox_radius
     lovelog.print "Player hitbox rad: " .. @hitbox_radius
-    lovelog.print "Player health: " .. @health
+    lovelog.print "Player lives: " .. @lives
     lovelog.print "Player x: " .. @pos.x
 
   update: (dt) =>
@@ -65,7 +65,8 @@ class Player extends Basechar
     if next(HC\collisions(@hitbox))
       for k, v in pairs HC\collisions(@hitbox)
         if k.type == "evil"
-          signal.emit "player_meets_bullet"
+          @lives -= 1
+          signal.emit("player_meets_bullet", {lives: @lives})
           return
 
   shoot: =>

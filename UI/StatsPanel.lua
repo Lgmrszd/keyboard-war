@@ -26,4 +26,7 @@ local StatsPanel = {
 signal.register("bomb_count_changed", function(count)
   StatsPanel.bombs = count
 end)
+signal.register("player_meets_bullet", function(arg)
+  StatsPanel.lives = arg.lives
+end)
 return StatsPanel

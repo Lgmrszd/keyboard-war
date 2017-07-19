@@ -23,7 +23,7 @@ do
     width = 70,
     speed = 300,
     slowspeed = 100,
-    health = 3,
+    lives = 3,
     bombs = 3,
     draw = function(self)
       _class_0.__parent.draw(self)
@@ -37,7 +37,7 @@ do
         end)
       end
       lovelog.print("Player hitbox rad: " .. self.hitbox_radius)
-      lovelog.print("Player health: " .. self.health)
+      lovelog.print("Player lives: " .. self.lives)
       return lovelog.print("Player x: " .. self.pos.x)
     end,
     update = function(self, dt)
@@ -81,7 +81,10 @@ do
       if next(HC:collisions(self.hitbox)) then
         for k, v in pairs(HC:collisions(self.hitbox)) do
           if k.type == "evil" then
-            signal.emit("player_meets_bullet")
+            self.lives = self.lives - 1
+            signal.emit("player_meets_bullet", {
+              lives = self.lives
+            })
             return 
           end
         end
