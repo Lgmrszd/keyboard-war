@@ -16,7 +16,7 @@ local HC = require("HCWorld")
 local Player
 do
   local _class_0
-  local keys_locked
+  local initial_bomb_count, keys_locked
   local _parent_0 = Basechar
   local _base_0 = {
     text = "(=^･ω･^=)",
@@ -82,8 +82,10 @@ do
         for k, v in pairs(HC:collisions(self.hitbox)) do
           if k.type == "evil" then
             self.lives = self.lives - 1
+            self.bombs = initial_bomb_count
             signal.emit("player_meets_bullet", {
-              lives = self.lives
+              lives = self.lives,
+              bombs = self.bombs
             })
             return 
           end
@@ -119,7 +121,9 @@ do
         if self.bombs > 0 then
           self:explodeBomb()
           self.bombs = self.bombs - 1
-          return signal.emit("bomb_count_changed", self.bombs)
+          return signal.emit("bomb_exploded", {
+            bombs = self.bombs
+          })
         end
       end
     end
@@ -153,6 +157,7 @@ do
   })
   _base_0.__class = _class_0
   local self = _class_0
+  initial_bomb_count = 3
   keys_locked = true
   if _parent_0.__inherited then
     _parent_0.__inherited(_parent_0, _class_0)

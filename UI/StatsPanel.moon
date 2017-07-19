@@ -18,7 +18,10 @@ StatsPanel =
 
   update: (dt) =>
 
-signal.register "bomb_count_changed", (count) -> StatsPanel.bombs = count
-signal.register "player_meets_bullet", (arg) -> StatsPanel.lives = arg.lives
+signal.register "bomb_exploded", (arg) ->
+  StatsPanel.bombs = arg.bombs
+signal.register "player_meets_bullet", (arg) ->
+  StatsPanel.lives = arg.lives
+  StatsPanel.bombs = arg.bombs
 
 return StatsPanel

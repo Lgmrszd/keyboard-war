@@ -10,6 +10,7 @@ Basechar = require "lib.Basechar"
 HC = require "HCWorld"
 
 class Player extends Basechar
+  initial_bomb_count = 3
   keys_locked = true
   text: "(=^･ω･^=)"
   width: 70
@@ -66,7 +67,8 @@ class Player extends Basechar
       for k, v in pairs HC\collisions(@hitbox)
         if k.type == "evil"
           @lives -= 1
-          signal.emit("player_meets_bullet", {lives: @lives})
+          @bombs = initial_bomb_count
+          signal.emit("player_meets_bullet", {lives: @lives, bombs: @bombs})
           return
 
   shoot: =>
@@ -97,4 +99,4 @@ class Player extends Basechar
       if @bombs > 0
         @explodeBomb!
         @bombs -= 1
-        signal.emit "bomb_count_changed", @bombs
+        signal.emit "bomb_exploded", {bombs: @bombs}

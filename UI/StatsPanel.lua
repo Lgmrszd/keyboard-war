@@ -23,10 +23,11 @@ local StatsPanel = {
   end,
   update = function(self, dt) end
 }
-signal.register("bomb_count_changed", function(count)
-  StatsPanel.bombs = count
+signal.register("bomb_exploded", function(arg)
+  StatsPanel.bombs = arg.bombs
 end)
 signal.register("player_meets_bullet", function(arg)
   StatsPanel.lives = arg.lives
+  StatsPanel.bombs = arg.bombs
 end)
 return StatsPanel
