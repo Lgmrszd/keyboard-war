@@ -70,7 +70,7 @@ class Player extends Basechar
 
   shoot: =>
     dist = 20
-    if Controller.pressed "lshift"
+    if Controller.pressed "slowdown"
       dist = 10
     Bullet{
       pos: @pos + Vector(-dist, -10),

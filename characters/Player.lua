@@ -86,7 +86,7 @@ do
     end,
     shoot = function(self)
       local dist = 20
-      if Controller.pressed("lshift") then
+      if Controller.pressed("slowdown") then
         dist = 10
       end
       Bullet({
