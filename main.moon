@@ -23,3 +23,10 @@ love.keypressed = (key_id) ->
 love.keyreleased = (key_id) ->
   key_id = Controller.getActionByKey key_id
   SceneManager\keyreleased key_id
+
+love.draw = ->
+  if not config.settings.graphics
+    return
+  scene = StateManager\getState!
+  if scene
+    scene\draw!

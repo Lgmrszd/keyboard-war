@@ -22,3 +22,12 @@ love.keyreleased = function(key_id)
   key_id = Controller.getActionByKey(key_id)
   return SceneManager:keyreleased(key_id)
 end
+love.draw = function()
+  if not config.settings.graphics then
+    return 
+  end
+  local scene = StateManager:getState()
+  if scene then
+    return scene:draw()
+  end
+end
