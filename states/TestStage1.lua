@@ -96,9 +96,9 @@ local events = {
           self.pos = self.pos + 500 * Vector(1, 0) * dt
         end,
         shoot = function(self)
-          if math.random() < 0.4 then
-            return Bullet({
-              pos = self.pos + Vector(0, 10),
+          for i = 1, 3 do
+            Bullet({
+              pos = self.pos + Vector(0, 20 * i),
               speed = 400,
               dir = Vector(0, 1),
               char = "*"
@@ -116,7 +116,7 @@ local events = {
         shoot = function(self)
           for i = 1, 3 do
             Bullet({
-              pos = self.pos + Vector(10 * i, 20 * i),
+              pos = self.pos + Vector(0, 20 * i),
               speed = 400,
               dir = Vector(0, 1),
               char = "*"

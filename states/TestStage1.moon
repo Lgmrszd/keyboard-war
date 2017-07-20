@@ -79,9 +79,9 @@ events = {
         move: (dt) =>
           @pos = @pos + 500 * Vector(1, 0) * dt
         shoot: =>
-          if math.random! < 0.4
+          for i = 1, 3 do
             Bullet{
-              pos: @pos + Vector(0, 10)
+              pos: @pos + Vector(0, 20 * i)
               speed: 400 --math.random(50, 100)
               dir: Vector(0, 1)
               char: "*"
@@ -94,7 +94,7 @@ events = {
         shoot: =>
           for i = 1, 3 do
             Bullet{
-              pos: @pos + Vector(10 * i, 20 * i)
+              pos: @pos + Vector(0, 20 * i)
               speed: 400 --math.random(50, 100)
               dir: Vector(0, 1)
               char: "*"
