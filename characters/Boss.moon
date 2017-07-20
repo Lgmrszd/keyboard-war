@@ -91,7 +91,7 @@ rage = Mode{
         @spawnCircleBullets{
           n: 5
           da: -@circle_bullets_da * 1.5
-          aspeed: 0
+          aspeed: -40
           color: {255, 255, 0}
           rad: 5
         }

@@ -105,13 +105,13 @@ do
       end
       Bullet({
         pos = self.pos + Vector(-dist, -10),
-        speed = 2000,
+        speed = 1500,
         dir = Vector(0, -1),
         type = "good"
       })
       return Bullet({
         pos = self.pos + Vector(dist, -10),
-        speed = 2000,
+        speed = 1500,
         dir = Vector(0, -1),
         type = "good"
       })

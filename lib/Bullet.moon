@@ -42,6 +42,12 @@ class Bullet
     @dir = args.dir or vector(0, 0)
     @char = args.char or "*"
     @hitbox = HC\circle(@pos.x, @pos.y, @rad)
+    if args.type == "good"
+      r = @rad
+      @hitbox = HC\polygon @pos.x - r, @pos.y - r - 7,
+                           @pos.x + r, @pos.y - r - 7,
+                           @pos.x + r, @pos.y + r,
+                           @pos.x - r, @pos.y + r
     @hitbox.type = args.type or "evil"
     @color = args.color or {0, 0, 255}
 
@@ -56,6 +62,8 @@ class Bullet
 
   draw: =>
     colorize @color, -> graphics.circle "fill", @pos.x, @pos.y, @rad
+    if config.debug
+      @hitbox\draw!
     -- graphics.printf s@char, @pos.x - @rad, @pos.y - @rad, 2 * @rad, "center"
 
   remove: =>

@@ -82,13 +82,13 @@ class Player extends Basechar
       dist = 10
     Bullet{
       pos: @pos + Vector(-dist, -10),
-      speed: 2000,
+      speed: 1500,
       dir: Vector 0, -1
       type: "good"
     }
     Bullet{
       pos: @pos + Vector(dist, -10),
-      speed: 2000,
+      speed: 1500,
       dir: Vector 0, -1
       type: "good"
     }

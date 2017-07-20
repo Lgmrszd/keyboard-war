@@ -50,9 +50,12 @@ do
       end
     end,
     draw = function(self)
-      return colorize(self.color, function()
+      colorize(self.color, function()
         return graphics.circle("fill", self.pos.x, self.pos.y, self.rad)
       end)
+      if config.debug then
+        return self.hitbox:draw()
+      end
     end,
     remove = function(self)
       HC:remove(self.hitbox)
@@ -68,6 +71,10 @@ do
       self.dir = args.dir or vector(0, 0)
       self.char = args.char or "*"
       self.hitbox = HC:circle(self.pos.x, self.pos.y, self.rad)
+      if args.type == "good" then
+        local r = self.rad
+        self.hitbox = HC:polygon(self.pos.x - r, self.pos.y - r - 7, self.pos.x + r, self.pos.y - r - 7, self.pos.x + r, self.pos.y + r, self.pos.x - r, self.pos.y + r)
+      end
       self.hitbox.type = args.type or "evil"
       self.color = args.color or {
         0,
