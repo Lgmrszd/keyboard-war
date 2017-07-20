@@ -64,7 +64,6 @@ rage = Mode{
     @rage_speed = (cx - @pos.x)/0.5
 
   update_func: (dt, tt) =>
-    @circle_bullets_dt += dt
     if tt < 0.5
       cx = config.scene_width/2
       -- print "pos.x", pos.x, "cx", cx, "next mode", @next_mode
@@ -73,9 +72,22 @@ rage = Mode{
       vec.x = 1
       @pos = @pos + dt * @rage_speed * vec\normalized!
     else
+      @circle_bullets_dt += dt
       if @circle_bullets_dt >= 0.15
         @circle_bullets_dt = 0
-        @spawnCircleBullets(20, @circle_bullets_da)
+        @spawnCircleBullets{
+          n: 20
+          da: @circle_bullets_da
+          aspeed: 0
+          color: {0, 0, 255}
+        }
+        @spawnCircleBullets{
+          n: 5
+          da: -@circle_bullets_da * 1.5
+          aspeed: 0
+          color: {255, 255, 0}
+          rad: 5
+        }
         @circle_bullets_da += 1
     if tt > 5
       @mode = "walk"
@@ -107,13 +119,6 @@ class Enemy extends Basechar
     @speed = 100
     @rage_speed = 300
     @modes = boss_modes
-
-
-  circleBulletsTimer: =>
-    if @circle_bullets_dt >= 0.15
-      @circle_bullets_dt = 0
-      @spawnCircleBullets(20, @circle_bullets_da)
-      @circle_bullets_da += 1
 
   update: (dt) =>
     -- @modes[@mode](@,dt)
@@ -148,17 +153,20 @@ class Enemy extends Basechar
 
 
 
-  spawnCircleBullets: (n, da) =>
-    for i = 0, n-1
-      a = i*(math.pi*2)/n
-      cx, cy, r, a = config.scene_width/2, @pos.y, 1, a + da
+  spawnCircleBullets: (args) =>
+    for i = 0, args.n-1
+      a = i*(math.pi*2)/args.n
+      cx, cy, r, a = config.scene_width/2, @pos.y, 1, a + args.da
       CircleBullet{
         center_pos: Vector(cx, cy)
         r_spawn: r
         pos: Vector(cx, cy) + vector.fromPolar(a, r)
         speed: 80
+        angle_speed: args.aspeed
+        color: args.color
         char: "*"
         type: "evil"
+        rad: args.rad
       }
 
   shoot: =>

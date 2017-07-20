@@ -76,7 +76,6 @@ local rage = Mode({
     self.rage_speed = (cx - self.pos.x) / 0.5
   end,
   update_func = function(self, dt, tt)
-    self.circle_bullets_dt = self.circle_bullets_dt + dt
     if tt < 0.5 then
       local cx = config.scene_width / 2
       self.direction = (self.pos.x > cx) and "left" or "right"
@@ -84,9 +83,30 @@ local rage = Mode({
       vec.x = 1
       self.pos = self.pos + dt * self.rage_speed * vec:normalized()
     else
+      self.circle_bullets_dt = self.circle_bullets_dt + dt
       if self.circle_bullets_dt >= 0.15 then
         self.circle_bullets_dt = 0
-        self:spawnCircleBullets(20, self.circle_bullets_da)
+        self:spawnCircleBullets({
+          n = 20,
+          da = self.circle_bullets_da,
+          aspeed = 0,
+          color = {
+            0,
+            0,
+            255
+          }
+        })
+        self:spawnCircleBullets({
+          n = 5,
+          da = -self.circle_bullets_da * 1.5,
+          aspeed = 0,
+          color = {
+            255,
+            255,
+            0
+          },
+          rad = 5
+        })
         self.circle_bullets_da = self.circle_bullets_da + 1
       end
     end
@@ -106,13 +126,6 @@ do
   local _class_0
   local _parent_0 = Basechar
   local _base_0 = {
-    circleBulletsTimer = function(self)
-      if self.circle_bullets_dt >= 0.15 then
-        self.circle_bullets_dt = 0
-        self:spawnCircleBullets(20, self.circle_bullets_da)
-        self.circle_bullets_da = self.circle_bullets_da + 1
-      end
-    end,
     update = function(self, dt)
       if self.mode ~= self.pmode then
         self.modes[self.mode]:init(self)
@@ -148,18 +161,21 @@ do
         end
       end
     end,
-    spawnCircleBullets = function(self, n, da)
-      for i = 0, n - 1 do
-        local a = i * (math.pi * 2) / n
+    spawnCircleBullets = function(self, args)
+      for i = 0, args.n - 1 do
+        local a = i * (math.pi * 2) / args.n
         local cx, cy, r
-        cx, cy, r, a = config.scene_width / 2, self.pos.y, 1, a + da
+        cx, cy, r, a = config.scene_width / 2, self.pos.y, 1, a + args.da
         CircleBullet({
           center_pos = Vector(cx, cy),
           r_spawn = r,
           pos = Vector(cx, cy) + vector.fromPolar(a, r),
           speed = 80,
+          angle_speed = args.aspeed,
+          color = args.color,
           char = "*",
-          type = "evil"
+          type = "evil",
+          rad = args.rad
         })
       end
     end,

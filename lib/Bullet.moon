@@ -43,6 +43,7 @@ class Bullet
     @char = args.char or "*"
     @hitbox = HC\circle(@pos.x, @pos.y, @rad)
     @hitbox.type = args.type or "evil"
+    @color = args.color or {0, 0, 255}
 
     BulletManager\addBullet @
 
@@ -54,7 +55,7 @@ class Bullet
       @remove!
 
   draw: =>
-    colorize {20, 20, 200}, -> graphics.circle "fill", @pos.x, @pos.y, @rad
+    colorize @color, -> graphics.circle "fill", @pos.x, @pos.y, @rad
     -- graphics.printf s@char, @pos.x - @rad, @pos.y - @rad, 2 * @rad, "center"
 
   remove: =>
@@ -67,13 +68,12 @@ class CircleBullet extends Bullet
     super\__init(args)
     @center_pos = args.center_pos
     @r_vector = args.center_pos - args.pos
-    @anglespeed = args.anglespeed or 1
+    @anglespeed = args.angle_speed or 1
     @r_spawn = args.r_spawn
     @ac = args.ac or 2
     @pos = @center_pos + @r_vector
 
   update: (dt) =>
-    -- print "radius ", (@r_spawn / @r_vector\toPolar!["y"])
     @r_vector = @r_vector\rotated((@r_spawn / @r_vector\toPolar!["y"]) * @anglespeed * dt)
     @r_vector += @r_vector\normalized! * @speed * dt
     @speed += @ac

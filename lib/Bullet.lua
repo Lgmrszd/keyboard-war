@@ -50,11 +50,7 @@ do
       end
     end,
     draw = function(self)
-      return colorize({
-        20,
-        20,
-        200
-      }, function()
+      return colorize(self.color, function()
         return graphics.circle("fill", self.pos.x, self.pos.y, self.rad)
       end)
     end,
@@ -73,6 +69,11 @@ do
       self.char = args.char or "*"
       self.hitbox = HC:circle(self.pos.x, self.pos.y, self.rad)
       self.hitbox.type = args.type or "evil"
+      self.color = args.color or {
+        0,
+        0,
+        255
+      }
       return BulletManager:addBullet(self)
     end,
     __base = _base_0,
@@ -113,7 +114,7 @@ do
       _class_0.__parent.__init(self, args)
       self.center_pos = args.center_pos
       self.r_vector = args.center_pos - args.pos
-      self.anglespeed = args.anglespeed or 1
+      self.anglespeed = args.angle_speed or 1
       self.r_spawn = args.r_spawn
       self.ac = args.ac or 2
       self.pos = self.center_pos + self.r_vector
