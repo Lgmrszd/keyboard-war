@@ -60,6 +60,7 @@ SceneManager =
 
   draw: =>
     love.graphics.setCanvas @canvas
+    love.graphics.setFont config.fonts.art
     colorize {10, 10, 10}, -> love.graphics.rectangle "fill", 0, 0, @canvas\getWidth!, @canvas\getHeight!
     HPBar\draw!
 

@@ -62,6 +62,7 @@ local SceneManager = {
   end,
   draw = function(self)
     love.graphics.setCanvas(self.canvas)
+    love.graphics.setFont(config.fonts.art)
     colorize({
       10,
       10,

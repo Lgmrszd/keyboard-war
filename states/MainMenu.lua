@@ -102,6 +102,10 @@ do
           self.active_node = #self.menu
         end
       elseif key_id == "shoot" then
+        self.synth:play({
+          freq = 700 * 4 ^ (2 / 12),
+          length = 0.07
+        })
         return self.menu[self.active_node].action()
       end
     end,

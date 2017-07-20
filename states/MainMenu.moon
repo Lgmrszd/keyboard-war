@@ -48,6 +48,7 @@ class MainMenu
       if @active_node == 0
         @active_node = #@menu
     elseif key_id == "shoot"
+      @synth\play {freq:700*4^(2/12), length:0.07}
       @menu[@active_node].action!
 
   update: (dt) =>

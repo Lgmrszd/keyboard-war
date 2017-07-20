@@ -6,7 +6,7 @@ local menu = {
     id = "retry",
     text = "Retry",
     action = function()
-      return StateManager.switch("Stage1")
+      return StateManager.switch("TestStage1")
     end
   },
   {
