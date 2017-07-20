@@ -67,16 +67,18 @@ rage = Mode{
     --@pos.x = 0
     cx = config.scene_width/2
     @rage_speed = (cx - @pos.x)/0.5
+    @diff_pos = vector(cx, @pos.y) - @pos
+    @income_pos = @pos
 
   update_func: (dt, tt) =>
-    if tt < 0.5
+    if tt < 1
       cx = config.scene_width/2
       -- print "pos.x", pos.x, "cx", cx, "next mode", @next_mode
       @direction = (@pos.x > cx) and "left" or "right"
-      vec = vector 0
-      vec.x = 1
-      @pos = @pos + dt * @rage_speed * vec\normalized!
+      @text = @texts[@direction]
+      @pos = @income_pos - tt*tt*@diff_pos + tt*2*@diff_pos
     else
+      @pos = vector(config.scene_width/2, @pos.y)
       @circle_bullets_dt += dt
       if @circle_bullets_dt >= 0.15
         @circle_bullets_dt = 0

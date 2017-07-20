@@ -80,15 +80,17 @@ local rage = Mode({
     self.circle_bullets_da = 0
     local cx = config.scene_width / 2
     self.rage_speed = (cx - self.pos.x) / 0.5
+    self.diff_pos = vector(cx, self.pos.y) - self.pos
+    self.income_pos = self.pos
   end,
   update_func = function(self, dt, tt)
-    if tt < 0.5 then
+    if tt < 1 then
       local cx = config.scene_width / 2
       self.direction = (self.pos.x > cx) and "left" or "right"
-      local vec = vector(0)
-      vec.x = 1
-      self.pos = self.pos + dt * self.rage_speed * vec:normalized()
+      self.text = self.texts[self.direction]
+      self.pos = self.income_pos - tt * tt * self.diff_pos + tt * 2 * self.diff_pos
     else
+      self.pos = vector(config.scene_width / 2, self.pos.y)
       self.circle_bullets_dt = self.circle_bullets_dt + dt
       if self.circle_bullets_dt >= 0.15 then
         self.circle_bullets_dt = 0
