@@ -20,10 +20,20 @@ local HC = require("HCWorld")
 local death = Mode({
   id = "walk",
   init_func = function(self)
-    return signal.emit("Stage1_end")
+    signal.emit("Stage1_end")
+    return signal.emit("boss_disappears")
   end,
   update_func = function(self, dt, tt)
     return signal.emit("Stage1_end")
+  end
+})
+local appear = Mode({
+  id = "appear",
+  init_func = function(self)
+    return signal.emit("boss_appears")
+  end,
+  update_func = function(self, dt, tt)
+    self.mode = "walk"
   end
 })
 local walk = Mode({
@@ -87,7 +97,9 @@ local rage = Mode({
 })
 local boss_modes = {
   ["walk"] = walk,
-  ["rage"] = rage
+  ["rage"] = rage,
+  ["appear"] = appear,
+  ["MAIN"] = "appear"
 }
 local Enemy
 do
@@ -173,7 +185,7 @@ do
         left = "凸(ಠ益ಠ凸)"
       }
       self.direction = "right"
-      self.mode = "walk"
+      self.mode = boss_modes["MAIN"]
       self.pmode = "nil"
       self.text = [[(凸ಠ益ಠ)凸]]
       self.width = 100

@@ -13,9 +13,18 @@ death = Mode{
   id: "walk"
   init_func: () =>
     signal.emit("Stage1_end")
+    signal.emit("boss_disappears")
 
   update_func: (dt, tt) =>
     signal.emit("Stage1_end")
+
+}
+appear = Mode {
+  id: "appear"
+  init_func: () =>
+    signal.emit("boss_appears")
+  update_func: (dt, tt) =>
+    @mode = "walk"
 
 }
 walk = Mode{
@@ -75,6 +84,8 @@ rage = Mode{
 boss_modes = {
   "walk": walk
   "rage": rage
+  "appear": appear
+  "MAIN": "appear"
 }
 
 class Enemy extends Basechar
@@ -89,7 +100,7 @@ class Enemy extends Basechar
       left: "凸(ಠ益ಠ凸)"
     }
     @direction = "right"
-    @mode = "walk"
+    @mode = boss_modes["MAIN"]
     @pmode = "nil"
     @text = [[(凸ಠ益ಠ)凸]]
     @width = 100
