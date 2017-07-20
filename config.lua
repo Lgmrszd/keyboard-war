@@ -11,5 +11,8 @@ return {
       "lshift",
       "lctrl"
     }
+  },
+  settings = {
+    graphics = true
   }
 }

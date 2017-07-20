@@ -14,7 +14,7 @@ local menu = {
     id = "settings",
     text = "Settings",
     action = function()
-      return error("TODO")
+      return StateManager.switch("Settings")
     end
   },
   {

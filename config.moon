@@ -9,4 +9,7 @@
     bomb: "x"
     slowdown: {"lshift", "lctrl"}
   }
+  settings: {
+    graphics: true
+  }
 }

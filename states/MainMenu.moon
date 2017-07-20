@@ -4,9 +4,9 @@ colorize = require "lib.colorize"
 config = require "config"
 
 menu = {
-  { id: "play", text: "Play", action: -> StateManager.switch "TestStage1"}
-  { id: "settings", text: "Settings", action: -> error "TODO" }
-  { id: "exit", text: "Exit", action: -> love.event.quit(0)}
+  { id: "play", text: "Play", action: -> StateManager.switch "TestStage1" }
+  { id: "settings", text: "Settings", action: -> StateManager.switch "Settings" }
+  { id: "exit", text: "Exit", action: -> love.event.quit(0) }
 }
 
 LCS = require "LuaCanSound"
