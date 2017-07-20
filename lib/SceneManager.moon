@@ -28,8 +28,11 @@ SceneManager =
   spawnBoss: (args) =>
     pos_x = args.pos.x * config.scene_width
     pos_y = args.pos.y * config.scene_height
+    income_pos_x = args.income_pos.x * config.scene_width
+    income_pos_y = args.income_pos.y * config.scene_height
     boss = Boss{
       pos: Vector(pos_x, pos_y)
+      income_pos: Vector(income_pos_x, income_pos_y)
       modes: args.modes
     }
     enemies[boss] = true

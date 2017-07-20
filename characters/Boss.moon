@@ -23,8 +23,13 @@ appear = Mode {
   id: "appear"
   init_func: () =>
     signal.emit("boss_appears")
+    @diff_pos = @spawn_pos - @income_pos
   update_func: (dt, tt) =>
-    @mode = "walk"
+    if tt < 1
+      @pos = @income_pos - tt*tt*@diff_pos + tt*2*@diff_pos
+    else
+      @pos = @spawn_pos
+      @mode = "walk"
 
 }
 walk = Mode{
@@ -97,15 +102,18 @@ boss_modes = {
   "walk": walk
   "rage": rage
   "appear": appear
+  "death": death
   "MAIN": "appear"
 }
 
 class Enemy extends Basechar
   new: (args) =>
-    @pos = args.pos
+    @pos = args.income_pos
+    @income_pos = args.income_pos
+    @spawn_pos = args.pos
     @hitbox_radius = 10
-    @hitbox = HC\circle args.pos.x, args.pos.y, @hitbox_radius
-    @max_hp = 100
+    @hitbox = HC\circle args.income_pos.x, args.income_pos.y, @hitbox_radius
+    @max_hp = 400
     @hp = @max_hp
     @texts = {
       right: "(凸ಠ益ಠ)凸"

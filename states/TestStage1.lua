@@ -130,7 +130,8 @@ local events = {
     time = 10,
     action = function()
       return SceneManager:spawnBoss({
-        pos = Vector(0.5, 0.05)
+        pos = Vector(0.5, 0.05),
+        income_pos = Vector(0.5, -0.05)
       })
     end
   }

@@ -107,6 +107,7 @@ events = {
     action: ->
       SceneManager\spawnBoss {
         pos: Vector(0.5, 0.05)
+        income_pos: Vector(0.5, -0.05)
       }
   }
 }

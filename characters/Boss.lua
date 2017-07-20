@@ -30,10 +30,16 @@ local death = Mode({
 local appear = Mode({
   id = "appear",
   init_func = function(self)
-    return signal.emit("boss_appears")
+    signal.emit("boss_appears")
+    self.diff_pos = self.spawn_pos - self.income_pos
   end,
   update_func = function(self, dt, tt)
-    self.mode = "walk"
+    if tt < 1 then
+      self.pos = self.income_pos - tt * tt * self.diff_pos + tt * 2 * self.diff_pos
+    else
+      self.pos = self.spawn_pos
+      self.mode = "walk"
+    end
   end
 })
 local walk = Mode({
@@ -119,6 +125,7 @@ local boss_modes = {
   ["walk"] = walk,
   ["rage"] = rage,
   ["appear"] = appear,
+  ["death"] = death,
   ["MAIN"] = "appear"
 }
 local Enemy
@@ -191,10 +198,12 @@ do
   setmetatable(_base_0, _parent_0.__base)
   _class_0 = setmetatable({
     __init = function(self, args)
-      self.pos = args.pos
+      self.pos = args.income_pos
+      self.income_pos = args.income_pos
+      self.spawn_pos = args.pos
       self.hitbox_radius = 10
-      self.hitbox = HC:circle(args.pos.x, args.pos.y, self.hitbox_radius)
-      self.max_hp = 100
+      self.hitbox = HC:circle(args.income_pos.x, args.income_pos.y, self.hitbox_radius)
+      self.max_hp = 400
       self.hp = self.max_hp
       self.texts = {
         right = "(凸ಠ益ಠ)凸",
