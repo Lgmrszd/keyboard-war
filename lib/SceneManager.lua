@@ -7,7 +7,6 @@ local Vector = require("hump.vector")
 local Boss = require("characters.Boss")
 local SimpleEnemy = require("characters.SimpleEnemy")
 local Player = require("characters.Player")
-local HPBar = require("UI.HPBar")
 local StatsPanel = require("UI.StatsPanel")
 local StateManager = require("lib.StateManager")
 local signal = require("hump.signal")
@@ -57,7 +56,6 @@ local SceneManager = {
     end
     player:update(dt)
     BulletManager:update(dt)
-    HPBar:update(dt)
     return StatsPanel:update(dt)
   end,
   draw = function(self)
@@ -70,7 +68,6 @@ local SceneManager = {
     }, function()
       return love.graphics.rectangle("fill", 0, 0, self.canvas:getWidth(), self.canvas:getHeight())
     end)
-    HPBar:draw()
     for enemy, _ in pairs(enemies) do
       enemy:draw()
     end

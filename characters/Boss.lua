@@ -16,12 +16,12 @@ do
 end
 local Vector = require("hump.vector")
 local Basechar = require("lib.Basechar")
+local HPBar = require("UI.HPBar")
 local HC = require("HCWorld")
 local death = Mode({
-  id = "walk",
+  id = "death",
   init_func = function(self)
-    signal.emit("Stage1_end")
-    return signal.emit("boss_disappears")
+    return signal.emit("Stage1_end")
   end,
   update_func = function(self, dt, tt)
     return signal.emit("Stage1_end")
@@ -30,7 +30,6 @@ local death = Mode({
 local appear = Mode({
   id = "appear",
   init_func = function(self)
-    signal.emit("boss_appears")
     self.diff_pos = self.spawn_pos - self.income_pos
   end,
   update_func = function(self, dt, tt)
@@ -136,6 +135,7 @@ do
   local _parent_0 = Basechar
   local _base_0 = {
     update = function(self, dt)
+      HPBar:update(dt)
       if self.mode ~= self.pmode then
         self.modes[self.mode]:init(self)
         self.pmode = self.mode
@@ -193,6 +193,7 @@ do
     end,
     draw = function(self)
       _class_0.__parent.draw(self)
+      HPBar:draw()
       return lovelog.print("Boss's hp: " .. self.hp)
     end
   }

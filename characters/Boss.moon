@@ -7,13 +7,13 @@ import Mode from require "lib.Modes"
 import graphics, keyboard from love
 Vector = require "hump.vector"
 Basechar = require "lib.Basechar"
+HPBar = require "UI.HPBar"
 HC = require "HCWorld"
 
 death = Mode{
-  id: "walk"
+  id: "death"
   init_func: () =>
     signal.emit("Stage1_end")
-    signal.emit("boss_disappears")
 
   update_func: (dt, tt) =>
     signal.emit("Stage1_end")
@@ -22,7 +22,6 @@ death = Mode{
 appear = Mode {
   id: "appear"
   init_func: () =>
-    signal.emit("boss_appears")
     @diff_pos = @spawn_pos - @income_pos
   update_func: (dt, tt) =>
     if tt < 1
@@ -137,6 +136,7 @@ class Enemy extends Basechar
     @modes = boss_modes
 
   update: (dt) =>
+    HPBar\update dt
     -- @modes[@mode](@,dt)
     if @mode ~= @pmode
       @modes[@mode]\init(@)
@@ -190,4 +190,5 @@ class Enemy extends Basechar
 
   draw: =>
     super\draw!
+    HPBar\draw!
     lovelog.print "Boss's hp: " .. @hp

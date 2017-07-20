@@ -3,7 +3,6 @@ Vector = require "hump.vector"
 Boss = require "characters.Boss"
 SimpleEnemy = require "characters.SimpleEnemy"
 Player = require "characters.Player"
-HPBar = require "UI.HPBar"
 StatsPanel = require "UI.StatsPanel"
 StateManager = require "lib.StateManager"
 signal = require "hump.signal"
@@ -55,14 +54,12 @@ SceneManager =
       enemy\update dt
     player\update dt
     BulletManager\update dt
-    HPBar\update dt
     StatsPanel\update dt
 
   draw: =>
     love.graphics.setCanvas @canvas
     love.graphics.setFont config.fonts.art
     colorize {10, 10, 10}, -> love.graphics.rectangle "fill", 0, 0, @canvas\getWidth!, @canvas\getHeight!
-    HPBar\draw!
 
     for enemy, _ in pairs enemies
       enemy\draw!
