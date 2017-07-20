@@ -165,10 +165,6 @@ class Enemy extends Basechar
       if @pos.y < 0 or @pos.y > config.scene_height or @pos.x < 0 or @pos.x > config.scene_width
         @remove!
 
-
-
-
-
   spawnCircleBullets: (args) =>
     for i = 0, args.n-1
       a = i*(math.pi*2)/args.n
