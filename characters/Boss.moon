@@ -114,7 +114,14 @@ class Enemy extends Basechar
     @income_pos = args.income_pos
     @spawn_pos = args.pos
     @hitbox_radius = 10
-    @hitbox = HC\circle args.income_pos.x, args.income_pos.y, @hitbox_radius
+    @width = 70
+    @height = 15
+    hw, hh = @width/2, @height/2
+    @hitbox = HC\polygon @pos.x - hw, @pos.y - hh,
+                         @pos.x + hw, @pos.y - hh,
+                         @pos.x + hw, @pos.y + hh,
+                         @pos.x - hw, @pos.y + hh
+    -- @hitbox = HC\circle args.income_pos.x, args.income_pos.y, @hitbox_radius
     @max_hp = 400
     @hp = @max_hp
     @texts = {
@@ -125,7 +132,6 @@ class Enemy extends Basechar
     @mode = boss_modes["MAIN"]
     @pmode = "nil"
     @text = [[(凸ಠ益ಠ)凸]]
-    @width = 100
     @speed = 100
     @rage_speed = 300
     @modes = boss_modes

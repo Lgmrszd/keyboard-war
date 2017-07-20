@@ -7,8 +7,8 @@ do
   local _class_0
   local _base_0 = {
     pos = Vector(0, 0),
-    width = 50,
-    height = 20,
+    width = 35,
+    height = 15,
     text = "x_x",
     hitbox_radius = 3,
     color = {
@@ -23,23 +23,10 @@ do
       self.pos = Vector(x, y)
     end,
     draw = function(self)
-      local topleft = self.pos - Vector(self.width, 20) / 2
       if config.debug then
-        colorize({
-          30,
-          30,
-          30
-        }, function()
-          return love.graphics.rectangle("fill", topleft.x, topleft.y, self.width, 20)
-        end)
-        colorize({
-          255,
-          0,
-          0
-        }, function()
-          return love.graphics.circle("fill", self.pos.x, self.pos.y, self.hitbox_radius)
-        end)
+        self.hitbox:draw()
       end
+      local topleft = self.pos - Vector(self.width, 20) / 2
       return colorize(self.color, function()
         return love.graphics.printf(self.text, topleft.x, topleft.y, self.width, "center")
       end)

@@ -204,7 +204,10 @@ do
       self.income_pos = args.income_pos
       self.spawn_pos = args.pos
       self.hitbox_radius = 10
-      self.hitbox = HC:circle(args.income_pos.x, args.income_pos.y, self.hitbox_radius)
+      self.width = 70
+      self.height = 15
+      local hw, hh = self.width / 2, self.height / 2
+      self.hitbox = HC:polygon(self.pos.x - hw, self.pos.y - hh, self.pos.x + hw, self.pos.y - hh, self.pos.x + hw, self.pos.y + hh, self.pos.x - hw, self.pos.y + hh)
       self.max_hp = 400
       self.hp = self.max_hp
       self.texts = {
@@ -215,7 +218,6 @@ do
       self.mode = boss_modes["MAIN"]
       self.pmode = "nil"
       self.text = [[(凸ಠ益ಠ)凸]]
-      self.width = 100
       self.speed = 100
       self.rage_speed = 300
       self.modes = boss_modes

@@ -14,10 +14,11 @@ class Enemy extends Basechar
     @hitbox = HC\polygon @pos.x - hw, @pos.y - hh,
                          @pos.x + hw, @pos.y - hh,
                          @pos.x + hw, @pos.y + hh,
-                         @pos.x - hw, @pos.y + hh,
-
+                         @pos.x - hw, @pos.y + hh
   update: (dt) =>
     -- super\update dt
+    -- inspect = require "inspect"
+    -- error inspect @hitbox
     if @move
       @move dt
     @hitbox\moveTo @pos.x, @pos.y
